@@ -1,0 +1,9 @@
+{
+  "name": "Aurex — Learn Tamil",
+  "short_name": "Aurex",
+  "start_url": "/",
+  "display": "standalone",
+  "background_color": "#fff7ed",
+  "theme_color": "#f97316",
+  "icons": [{ "src": "/favicon.svg", "sizes": "any", "type": "image/svg+xml" }]
+}

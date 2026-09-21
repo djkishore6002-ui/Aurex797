@@ -1,0 +1,23 @@
+{
+  "name": "aurex797",
+  "private": true,
+  "version": "1.0.0",
+  "description": "AUREX'26 Track 01 — Tamil Language Learning & Workshop Ecosystem",
+  "workspaces": [
+    "apps/web",
+    "services/api",
+    "packages/shared",
+    "packages/ui"
+  ],
+  "scripts": {
+    "dev": "npm run dev --workspace=services/api & npm run dev --workspace=apps/web",
+    "dev:api": "npm run dev --workspace=services/api",
+    "dev:web": "npm run dev --workspace=apps/web",
+    "build": "npm run build --workspace=packages/shared && npm run build --workspace=services/api && npm run build --workspace=apps/web",
+    "build:web": "npm run build --workspace=apps/web",
+    "build:api": "npm run build --workspace=services/api",
+    "seed": "npm run seed --workspace=services/api",
+    "test": "npm run test --workspace=services/api",
+    "start": "node services/api/dist/index.js"
+  }
+}

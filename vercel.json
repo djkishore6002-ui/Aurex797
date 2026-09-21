@@ -1,0 +1,21 @@
+{
+  "version": 2,
+  "buildCommand": "npm run build",
+  "installCommand": "npm install",
+  "framework": null,
+  "builds": [
+    { "src": "api/index.js", "use": "@vercel/node" },
+    { "src": "apps/web/dist/**", "use": "@vercel/static" }
+  ],
+  "routes": [
+    { "src": "/api/(.*)", "dest": "/api/index.js" },
+    { "src": "/uploads/(.*)", "dest": "/api/index.js" },
+    { "src": "/assets/(.*)", "dest": "/apps/web/dist/assets/$1" },
+    { "src": "/favicon.svg", "dest": "/apps/web/dist/favicon.svg" },
+    { "src": "/manifest.json", "dest": "/apps/web/dist/manifest.json" },
+    { "src": "/(.*)", "dest": "/api/index.js" }
+  ],
+  "functions": {
+    "api/index.js": { "maxDuration": 30, "memory": 1024 }
+  }
+}

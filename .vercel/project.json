@@ -1,0 +1,12 @@
+{
+  "projectId": "aurex26aa",
+  "orgId": "aurex26aa",
+  "settings": {
+    "framework": null,
+    "buildCommand": "npm run build",
+    "installCommand": "npm install",
+    "outputDirectory": "",
+    "rootDirectory": ".",
+    "projectName": "AUREX'26aa"
+  }
+}
