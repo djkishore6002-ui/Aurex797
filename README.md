@@ -205,30 +205,73 @@ bash e2e-smoke.sh
 
 ---
 
-## Deployment
+## Deploying Solai (hosting)
 
-The app is a standard Next.js production build — it deploys anywhere Node runs
-(Vercel, Railway, Fly.io, a VPS, …):
+The app is a standard `next build` + `next start` server with **one stateful
+requirement: a writable, persistent disk** for the SQLite file and uploads
+(`./data`). It also needs **Node.js ≥ 22.5** (`.nvmrc` is pinned — hosts that
+honour it pick this up automatically).
+
+Pick a target that gives you a long-running process **and** persistent storage:
+
+### Option A — Railway (easiest)
+
+1. [railway.app](https://railway.app) → **New Project → Deploy from GitHub repo**
+   → `djkishore6002-ui/Aurex797` (branch `main` after merging the PR, or deploy
+   this branch directly).
+2. Add a **Volume** (~1 GB is plenty) and set its mount path to `/data`.
+3. Set environment variables:
+   ```
+   DATABASE_PATH=/data/solai.db
+   AUTH_SECRET=<64 random hex chars>        # node -e "console.log(require('crypto').randomBytes(32).toString('hex'))"
+   NEXT_PUBLIC_APP_URL=https://<your-app>.up.railway.app
+   ```
+4. Done — the default Next.js build/start commands are auto-detected. The first
+   request seeds the demo data onto the volume (survives restarts).
+
+### Option B — any VPS (Ubuntu/Debian, 2 GB, e.g. Hetzner/DigitalOcean)
 
 ```bash
-npm run build
-npm start            # binds :3000; set -H 0.0.0.0 / NODE_OPTIONS for container hosts
+# on the server (Node 22 installed, e.g. via nodesource or nvm)
+git clone https://github.com/djkishore6002-ui/Aurex797.git solai && cd solai
+npm ci --omit=dev && npm run build
+cat > solai.env <<'EOF'
+AUTH_SECRET=<64 random hex chars>
+NEXT_PUBLIC_APP_URL=https://your-domain.example
+EOF
+npm start -- -H 0.0.0.0 -p 3000        # or keep it alive:
+# npx pm2 start "npx next start -p 3000 -H 0.0.0.0" --name solai --env-file solai.env
 ```
+Put Caddy/Nginx in front for TLS (Caddy does it automatically:
+`your-domain.example { reverse_proxy 127.0.0.1:3000 }`).
+Backups = copy `data/solai.db` (see "Switching to PostgreSQL" for the scale-up path).
 
-Checklist for a real deployment:
+### Option C — Fly.io
 
-1. Set a strong `AUTH_SECRET` (32+ random bytes) and `NEXT_PUBLIC_APP_URL` (your public origin).
-2. Persist the `data/` directory (SQLite + uploads) on a volume; back it up regularly.
-   The DB is a single file — nightly `sqlite3 data/solai.db ".backup ..."` or copy-while-WAL
-   is safe enough for small fleets.
-3. Put TLS in front (any proxy) — session cookies are `Secure` in production.
-4. Optional: set `OPENROUTER_API_KEY` for cloud LLM answers; without it the local
-   retrieval tutor keeps working with zero external calls.
-5. Rate limiting and per-IP limits are built in; keep them on when scaling horizontally
-   (state is in-process per worker — for multi-instance deployments move rate-limit
-   counters to Redis or front with an edge limit).
+`fly launch` (accept defaults, set `NODE_VERSION=22`), attach a volume at
+`/data`, set the env vars above (`DATABASE_PATH=/data/solai.db`), then
+`fly deploy`.
 
-### Switching to PostgreSQL (optional)
+### What NOT to do: classic serverless (Vercel/Netlify free functions)
+
+Their filesystems are **ephemeral and read-only outside /tmp** — an embedded
+SQLite DB would reset on every cold start. On those platforms, follow the
+"Switching to PostgreSQL" section first (Neon/Supabase Postgres + S3/Supabase
+storage), then deploy as usual.
+
+### Post-deploy checklist
+
+1. Log in with `admin@solai.test` / `admin1234` — **change that password immediately**
+   (create your own super admin via `/api/admin/users`, then deactivate the demo account).
+2. Open `/admin/ai` → confirm provider settings (add `OPENROUTER_API_KEY` if you
+   want cloud LLM answers; the offline tutor works without it).
+3. Verify `/verify/TN-2026-000001` shows the valid certificate (checks the public
+   URL in QR codes resolves correctly).
+4. Check your domain in the homepage header and in `NEXT_PUBLIC_APP_URL`.
+
+---
+
+## Switching to PostgreSQL (optional)
 
 All SQL flows through `src/db` (one connection, one schema file, small query surface).
 The data-access layer is deliberately thin: to move to Postgres, replace
