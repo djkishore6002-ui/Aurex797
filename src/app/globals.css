@@ -1,0 +1,118 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root {
+  --font-sans: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Noto Sans', sans-serif;
+  --font-tamil: 'Noto Sans Tamil', 'Nirmala UI', 'Latha', var(--font-sans);
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  html {
+    scroll-behavior: auto;
+  }
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
+}
+
+body {
+  @apply bg-ink-50 text-ink-950 antialiased;
+}
+
+.tamil {
+  font-family: var(--font-tamil);
+}
+
+@layer components {
+  .container-page {
+    @apply mx-auto w-full max-w-6xl px-4 sm:px-6 lg:px-8;
+  }
+
+  .card {
+    @apply rounded-2xl border border-ink-200 bg-white shadow-sm;
+  }
+
+  .btn {
+    @apply inline-flex items-center justify-center gap-2 rounded-xl px-4 py-2.5 text-sm font-semibold transition-colors focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-brand-600 disabled:cursor-not-allowed disabled:opacity-50;
+  }
+  .btn-primary {
+    @apply btn bg-brand-700 text-white hover:bg-brand-800;
+  }
+  .btn-secondary {
+    @apply btn border border-ink-300 bg-white text-ink-800 hover:bg-ink-100;
+  }
+  .btn-danger {
+    @apply btn bg-red-600 text-white hover:bg-red-700;
+  }
+  .btn-ghost {
+    @apply btn text-ink-700 hover:bg-ink-100;
+  }
+
+  .input {
+    @apply w-full rounded-xl border border-ink-300 bg-white px-3.5 py-2.5 text-sm text-ink-950 placeholder:text-ink-400 focus:border-brand-500 focus:outline-none focus:ring-2 focus:ring-brand-500/30;
+  }
+  .label {
+    @apply mb-1.5 block text-sm font-medium text-ink-700;
+  }
+
+  .badge {
+    @apply inline-flex items-center gap-1 rounded-full px-2.5 py-0.5 text-xs font-semibold;
+  }
+
+  .prose-block {
+    @apply space-y-4;
+  }
+}
+
+/* AI chat markdown-ish rendering (safe: rendered from escaped HTML) */
+.ai-md p {
+  margin: 0.35rem 0;
+}
+.ai-md strong {
+  @apply font-semibold;
+}
+.ai-md em {
+  @apply italic;
+}
+.ai-md code {
+  @apply rounded bg-ink-100 px-1.5 py-0.5 text-[0.85em] font-mono;
+}
+.ai-md ul,
+.ai-md ol {
+  @apply my-1.5 list-disc pl-5;
+}
+.ai-md ol {
+  @apply list-decimal;
+}
+.ai-md a {
+  @apply text-brand-700 underline;
+}
+.ai-md .tamil {
+  font-size: 1.05em;
+}
+
+/* Video player */
+.video-shell video::-webkit-media-controls-panel {
+  background-color: rgba(15, 23, 32, 0.85);
+}
+
+/* Scrollbar (subtle) */
+::-webkit-scrollbar {
+  width: 10px;
+  height: 10px;
+}
+::-webkit-scrollbar-thumb {
+  @apply rounded-full bg-ink-300;
+}
+::-webkit-scrollbar-track {
+  background: transparent;
+}
