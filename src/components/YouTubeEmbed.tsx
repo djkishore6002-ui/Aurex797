@@ -68,12 +68,17 @@ function loadYouTubeApi(): Promise<YTNamespace> {
 
 type State = 'idle' | 'loading' | 'playing' | 'fallback' | 'raw';
 
-export function YouTubeEmbed({ videoId, title }: { videoId: string; title: string }) {
+export function YouTubeEmbed({ videoId, title, onPlaying }: { videoId: string; title: string; onPlaying?: () => void }) {
   const [state, setState] = useState<State>('idle');
   const [opened, setOpened] = useState(false);
   const [showRawFrame, setShowRawFrame] = useState(false);
   const hostRef = useRef<HTMLDivElement>(null);
   const timerRef = useRef<number | null>(null);
+  const onPlayingRef = useRef(onPlaying);
+  const firedRef = useRef(false);
+  useEffect(() => {
+    onPlayingRef.current = onPlaying;
+  });
   const watchUrl = `https://www.youtube.com/watch?v=${videoId}`;
 
   useEffect(() => {
@@ -95,6 +100,7 @@ export function YouTubeEmbed({ videoId, title }: { videoId: string; title: strin
   }
 
   function start() {
+    firedRef.current = false;
     setState('loading');
     loadYouTubeApi()
       .then((YT) => {
@@ -120,6 +126,10 @@ export function YouTubeEmbed({ videoId, title }: { videoId: string; title: strin
                 // PLAYING — inline playback is working.
                 if (timerRef.current) window.clearTimeout(timerRef.current);
                 setState('playing');
+                if (!firedRef.current) {
+                  firedRef.current = true;
+                  onPlayingRef.current?.();
+                }
               }
             },
             onError: () => toFallback(), // 153/150/101/… — not embeddable

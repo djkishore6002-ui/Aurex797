@@ -1,5 +1,6 @@
 'use client';
 
+import Link from 'next/link';
 import { useMemo, useState } from 'react';
 import { YouTubeEmbed } from '@/components/YouTubeEmbed';
 
@@ -149,6 +150,12 @@ export function ResourcesBrowser({ resources }: { resources: ResourceRow[] }) {
               <article key={r.id} className="card p-4">
                 <YouTubeEmbed videoId={r.youtube_id!} title={r.title} />
                 <div className="mt-3 flex flex-wrap items-center gap-2">
+                  <Link
+                    href={`/watch/${r.id}`}
+                    className="inline-flex items-center gap-1 rounded-full border border-brand-400/30 bg-brand-500/15 px-2.5 py-0.5 text-xs font-semibold text-brand-200 transition hover:bg-brand-500/25"
+                  >
+                    ⛶ Watch mode
+                  </Link>
                   <span className={`badge ${PROVIDER_STYLE[r.provider] ?? PROVIDER_STYLE.other}`}>{PROVIDER_NAME[r.provider] ?? r.provider}</span>
                   {r.level && (
                     <span className="badge border border-cyan-400/30 bg-cyan-400/10 text-cyan-200 capitalize">{r.level}</span>

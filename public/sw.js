@@ -13,7 +13,7 @@
  * IndexedDB on the client — this SW intentionally does not cache
  * lesson video streams.
  */
-const VERSION = 'solai-v3';
+const VERSION = 'solai-v4';
 const ASSETS = `${VERSION}-assets`;
 const CORE = ['/manifest.json', '/icon.svg'];
 
