@@ -64,6 +64,8 @@ export function destroySession(): void {
 
 /** Read the current logged-in user (server components + route handlers). Returns null when anonymous. */
 export function getCurrentUser(): SessionUser | null {
+  // Static snapshot (GitHub Pages) build: no request cookies, always anonymous.
+  if (process.env.SOLAI_STATIC === '1') return null;
   const token = cookies().get(SESSION_COOKIE)?.value;
   if (!token) return null;
   const db = getDb();

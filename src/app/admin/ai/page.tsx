@@ -4,7 +4,7 @@ import { fmtDate } from '@/lib/utils';
 import { getProviderSettings } from '@/lib/ai/gateway';
 import { AiAdmin } from './ai-admin';
 
-export const dynamic = 'force-dynamic';
+export const dynamic = process.env.SOLAI_STATIC === '1' ? undefined : 'force-dynamic';
 
 export default function AdminAiPage() {
   const db = getDb();

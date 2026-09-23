@@ -2,7 +2,7 @@ import { getDb, plainRows } from '@/db';
 import { PageHead } from '@/components/ui';
 import { CoursesAdmin } from './courses-admin';
 
-export const dynamic = 'force-dynamic';
+export const dynamic = process.env.SOLAI_STATIC === '1' ? undefined : 'force-dynamic';
 
 export default function AdminCoursesPage() {
   const db = getDb();

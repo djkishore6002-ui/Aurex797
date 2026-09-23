@@ -4,7 +4,7 @@ import { getLang, bi } from '@/lib/i18n';
 import { getCultureItems } from '@/lib/culture';
 import { PageHead } from '@/components/ui';
 
-export const dynamic = 'force-dynamic';
+export const dynamic = process.env.SOLAI_STATIC === '1' ? undefined : 'force-dynamic';
 
 export const metadata: Metadata = {
   title: 'Tamil Food Explorer · தமிழ் உணவு உலா',

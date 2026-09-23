@@ -12,7 +12,29 @@ import { VocabCardClient } from '@/components/VocabCard';
 import { LessonSidebar } from './lesson-sidebar';
 import { LessonTools } from './lesson-tools';
 
-export const dynamic = 'force-dynamic';
+export const dynamic = process.env.SOLAI_STATIC === '1' ? undefined : 'force-dynamic';
+
+/**
+ * Static snapshot (GitHub Pages): prerender every published lesson.
+ * In the live (server) app this returns [] so the page stays
+ * `force-dynamic` and always reflects current enrollment state.
+ */
+export const generateStaticParams: () => { courseSlug: string; lessonSlug: string }[] =
+  process.env.SOLAI_STATIC === '1'
+    ? () => {
+        const db = getDb();
+        const rows = db
+          .prepare(
+            `SELECT c.slug AS courseSlug, l.slug AS lessonSlug
+             FROM courses c
+             JOIN course_modules m ON m.course_id = c.id AND m.is_published = 1
+             JOIN lessons l ON l.module_id = m.id AND l.is_published = 1
+             WHERE c.is_published = 1 AND c.deleted_at IS NULL`
+          )
+          .all() as unknown as { courseSlug: string; lessonSlug: string }[];
+        return rows;
+      }
+    : () => [];
 
 export async function generateMetadata({ params }: { params: { courseSlug: string; lessonSlug: string } }): Promise<Metadata> {
   const db = getDb();

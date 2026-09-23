@@ -3,7 +3,7 @@ import { getDb } from '@/db';
 import { PageHead, StatCard, Badge } from '@/components/ui';
 import { fmtDate, timeAgo } from '@/lib/utils';
 
-export const dynamic = 'force-dynamic';
+export const dynamic = process.env.SOLAI_STATIC === '1' ? undefined : 'force-dynamic';
 
 export default function AdminDashboard() {
   const db = getDb();

@@ -6,7 +6,7 @@ import { getCurrentUser } from '@/lib/auth';
 import { PageHead, Badge } from '@/components/ui';
 import { QuizEngine } from '@/components/QuizEngine';
 
-export const dynamic = 'force-dynamic';
+export const dynamic = process.env.SOLAI_STATIC === '1' ? undefined : 'force-dynamic';
 
 export const metadata: Metadata = {
   title: 'Culture Quiz · கலாசார வினாடி-வினா',

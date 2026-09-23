@@ -3,7 +3,7 @@ import { PageHead } from '@/components/ui';
 import { timeAgo } from '@/lib/utils';
 import { AnnouncementsAdmin } from './announcements-admin';
 
-export const dynamic = 'force-dynamic';
+export const dynamic = process.env.SOLAI_STATIC === '1' ? undefined : 'force-dynamic';
 
 export default function AdminAnnouncementsPage() {
   const db = getDb();

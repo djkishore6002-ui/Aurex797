@@ -5,7 +5,7 @@ import { PageHead } from '@/components/ui';
 import { ResourcesBrowser, type ResourceRow } from '@/components/ResourcesBrowser';
 import { getLang, bi } from '@/lib/i18n';
 
-export const dynamic = 'force-dynamic';
+export const dynamic = process.env.SOLAI_STATIC === '1' ? undefined : 'force-dynamic';
 
 export const metadata: Metadata = {
   title: 'Free Resources · இலவச கற்றல் வளங்கள்',

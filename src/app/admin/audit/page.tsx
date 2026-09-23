@@ -2,7 +2,7 @@ import { getDb } from '@/db';
 import { PageHead, Badge } from '@/components/ui';
 import { fmtDateTime } from '@/lib/utils';
 
-export const dynamic = 'force-dynamic';
+export const dynamic = process.env.SOLAI_STATIC === '1' ? undefined : 'force-dynamic';
 
 export default function AdminAuditPage() {
   const db = getDb();

@@ -9,7 +9,16 @@ import { Badge, PageHead } from '@/components/ui';
 import { TutorContextBridge } from '@/components/TutorContextBridge';
 import { RegisterAttend } from './register-attend';
 
-export const dynamic = 'force-dynamic';
+export const dynamic = process.env.SOLAI_STATIC === '1' ? undefined : 'force-dynamic';
+
+/** Static snapshot (GitHub Pages): prerender every published workshop. */
+export function generateStaticParams() {
+  const db = getDb();
+  const rows = db
+    .prepare('SELECT slug FROM workshops WHERE is_published = 1 AND deleted_at IS NULL')
+    .all() as unknown as { slug: string }[];
+  return rows.map((r) => ({ slug: r.slug }));
+}
 
 export async function generateMetadata({ params }: { params: { slug: string } }): Promise<Metadata> {
   const db = getDb();

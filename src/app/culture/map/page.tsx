@@ -4,7 +4,7 @@ import { getLang, bi } from '@/lib/i18n';
 import { PageHead } from '@/components/ui';
 import { TnMap, type DistrictRow } from '@/components/TnMap';
 
-export const dynamic = 'force-dynamic';
+export const dynamic = process.env.SOLAI_STATIC === '1' ? undefined : 'force-dynamic';
 
 export const metadata: Metadata = {
   title: 'Virtual Tamil Nadu Map · தமிழ்நாடு வரைபடம்',

@@ -6,7 +6,7 @@ import { verifyCertificate } from '@/lib/certificates';
 import { fmtDate } from '@/lib/utils';
 import { Badge } from '@/components/ui';
 
-export const dynamic = 'force-dynamic';
+export const dynamic = process.env.SOLAI_STATIC === '1' ? undefined : 'force-dynamic';
 
 export async function generateMetadata({ params }: { params: { id: string } }): Promise<Metadata> {
   return { title: `Verify ${params.id}` };

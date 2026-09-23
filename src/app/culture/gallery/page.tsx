@@ -5,7 +5,7 @@ import { getCultureItems } from '@/lib/culture';
 import { CATEGORY_META } from '@/lib/culture-meta';
 import { PageHead } from '@/components/ui';
 
-export const dynamic = 'force-dynamic';
+export const dynamic = process.env.SOLAI_STATIC === '1' ? undefined : 'force-dynamic';
 
 export const metadata: Metadata = {
   title: 'Tamil Culture Gallery · தமிழ் கலாசார தொகுப்பு',
@@ -21,11 +21,13 @@ const TABS = [
   { key: 'craft', label: 'Crafts · கைவினை' },
 ];
 
-export default function GalleryPage({ searchParams }: { searchParams: { cat?: string } }) {
+export default function GalleryPage(props: { searchParams?: { cat?: string } }) {
   const db = getDb();
   const lang = getLang();
   const head = bi('தமிழ் கலாசார தொகுப்பு', 'Tamil Culture Gallery', lang);
-  const cat = TABS.some((t) => t.key === searchParams.cat) ? (searchParams.cat as string) : 'all';
+  // Static snapshot (GitHub Pages): searchParams is unavailable — show all categories.
+  const catParam = process.env.SOLAI_STATIC === '1' ? undefined : props.searchParams?.cat;
+  const cat = TABS.some((t) => t.key === catParam) ? (catParam as string) : 'all';
 
   const groups = (cat === 'all' ? TABS.map((t) => t.key) : [cat])
     .map((k) => ({ key: k, items: getCultureItems(db, [k]), meta: CATEGORY_META[k] }))
@@ -54,7 +56,7 @@ export default function GalleryPage({ searchParams }: { searchParams: { cat?: st
         {TABS.map((t) => (
           <a
             key={t.key}
-            href={`/culture/gallery?cat=${t.key}`}
+            href={process.env.SOLAI_STATIC === '1' ? '/culture/gallery' : `/culture/gallery?cat=${t.key}`}
             className={`rounded-full px-4 py-1.5 text-xs font-semibold transition ${
               cat === t.key ? 'bg-gradient-to-r from-brand-600 to-brand-500 text-white' : 'border border-white/10 bg-white/5 text-ink-400 hover:text-ink-100'
             }`}

@@ -3,7 +3,7 @@ import { PageHead } from '@/components/ui';
 import { fmtDate } from '@/lib/utils';
 import { CertificatesAdmin } from './certificates-admin';
 
-export const dynamic = 'force-dynamic';
+export const dynamic = process.env.SOLAI_STATIC === '1' ? undefined : 'force-dynamic';
 
 export default function AdminCertificatesPage() {
   const db = getDb();

@@ -5,7 +5,7 @@ import { getLang, bi } from '@/lib/i18n';
 import { getCultureItems, toStageItem } from '@/lib/culture';
 import { MuseumShowcase } from '@/components/MuseumShowcase';
 
-export const dynamic = 'force-dynamic';
+export const dynamic = process.env.SOLAI_STATIC === '1' ? undefined : 'force-dynamic';
 
 export const metadata: Metadata = {
   title: 'Tamil Culture & Heritage · தமிழ் கலாசாரம்',

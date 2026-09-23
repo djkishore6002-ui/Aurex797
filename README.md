@@ -42,6 +42,7 @@ npm run typecheck    # strict tsc --noEmit
 npm test             # vitest unit tests (pronunciation, crypto, auth, attendance, RAG)
 bash e2e-smoke.sh    # 47-check end-to-end API/UX suite against a running server
 npm run db:reset     # wipe data/solai.db (self-reseeds on next boot)
+./scripts/export-snapshot.sh   # build the static GitHub Pages snapshot (out/)
 ```
 
 ---
@@ -274,6 +275,34 @@ Backups = copy `data/solai.db` (see "Switching to PostgreSQL" for the scale-up p
 `fly launch` (accept defaults, set `NODE_VERSION=22`), attach a volume at
 `/data`, set the env vars above (`DATABASE_PATH=/data/solai.db`), then
 `fly deploy`.
+
+### Option D — GitHub Pages public snapshot (no server, no card, permanent)
+
+A **static mirror** of all public pages (home, courses + every lesson, workshops,
+resources, the full culture suite incl. the 3D heritage temple & TN map, vocabulary,
+FAQ…) is built by `scripts/export-snapshot.sh`: it trims the server-only routes
+(APIs, auth, admin), sets `SOLAI_STATIC=1`, runs `next build` (App Router static
+export → `out/`), and restores the tree. Content is baked in from the live
+`data/solai.db` at build time.
+
+```bash
+./scripts/export-snapshot.sh
+# then publish the export to the gh-pages branch (see below)
+```
+
+Publishing (one-time):
+
+1. Build the snapshot (`out/`).
+2. Push `out/` to the `gh-pages` branch of this repo.
+3. Repo **Settings → Pages → Build and deployment → Deploy from a branch →
+   `gh-pages` / `(root)` → Save**. The site goes live at
+   `https://<github-user>.github.io/<repo>/` within a few minutes.
+
+Honest limits of the snapshot: GitHub Pages runs no Node process, so sign-in, the
+AI tutor, quiz saving and progress tracking are **not** available there (an amber
+banner says so). The full app keeps running via a live preview or a local
+`npm run dev` — or any real host from Options A–C. To refresh the snapshot after
+content changes, re-run the script and push `out/` again.
 
 ### What NOT to do: classic serverless (Vercel/Netlify free functions)
 

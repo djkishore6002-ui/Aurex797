@@ -5,7 +5,7 @@ import { fmtDate } from '@/lib/utils';
 import { Badge } from '@/components/ui';
 import { DIFFICULTY_LABEL } from '@/lib/utils';
 
-export const dynamic = 'force-dynamic';
+export const dynamic = process.env.SOLAI_STATIC === '1' ? undefined : 'force-dynamic';
 
 const HERO_STATS = [
   { icon: '📚', label: 'Structured levels' },

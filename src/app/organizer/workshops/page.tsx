@@ -3,7 +3,7 @@ import { getCurrentUser } from '@/lib/auth';
 import { PageHead } from '@/components/ui';
 import { AttendanceAdmin } from './attendance-admin';
 
-export const dynamic = 'force-dynamic';
+export const dynamic = process.env.SOLAI_STATIC === '1' ? undefined : 'force-dynamic';
 
 export default function OrganizerWorkshopsPage() {
   const user = getCurrentUser()!;

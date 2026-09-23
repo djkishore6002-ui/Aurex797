@@ -8,7 +8,7 @@ import { Badge, EmptyState, PageHead } from '@/components/ui';
 import { CommunityActions } from './community-actions';
 import { PostActions } from './post-actions';
 
-export const dynamic = 'force-dynamic';
+export const dynamic = process.env.SOLAI_STATIC === '1' ? undefined : 'force-dynamic';
 
 export async function generateMetadata({ params }: { params: { slug: string } }): Promise<Metadata> {
   const db = getDb();

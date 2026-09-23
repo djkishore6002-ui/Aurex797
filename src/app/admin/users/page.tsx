@@ -3,7 +3,7 @@ import { PageHead } from '@/components/ui';
 import { fmtDate } from '@/lib/utils';
 import { UsersAdmin } from './users-admin';
 
-export const dynamic = 'force-dynamic';
+export const dynamic = process.env.SOLAI_STATIC === '1' ? undefined : 'force-dynamic';
 
 export default function AdminUsersPage() {
   const db = getDb();

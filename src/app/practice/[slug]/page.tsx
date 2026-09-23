@@ -6,7 +6,7 @@ import { Badge, PageHead } from '@/components/ui';
 import { TutorContextBridge } from '@/components/TutorContextBridge';
 import { ScenarioPlayer } from './scenario-player';
 
-export const dynamic = 'force-dynamic';
+export const dynamic = process.env.SOLAI_STATIC === '1' ? undefined : 'force-dynamic';
 
 export async function generateMetadata({ params }: { params: { slug: string } }): Promise<Metadata> {
   const db = getDb();

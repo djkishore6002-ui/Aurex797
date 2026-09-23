@@ -5,7 +5,7 @@ import { getCultureItems, toStageItem } from '@/lib/culture';
 import { PageHead } from '@/components/ui';
 import { HeritageExplorer } from '@/components/HeritageExplorer';
 
-export const dynamic = 'force-dynamic';
+export const dynamic = process.env.SOLAI_STATIC === '1' ? undefined : 'force-dynamic';
 
 export const metadata: Metadata = {
   title: '3D Temple & Heritage Explorer · 3D கோவில் உலா',

@@ -13,6 +13,8 @@ export * from './i18n-data';
 
 /** Current UI language: cookie wins (fresh switch), else default 'ta'. */
 export function getLang(): Lang {
+  // Static snapshot (GitHub Pages) build: no request cookies available.
+  if (process.env.SOLAI_STATIC === '1') return 'ta';
   const c = cookies().get('solai_lang')?.value;
   if (isLang(c)) return c;
   return 'ta';
