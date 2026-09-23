@@ -2,6 +2,22 @@ import type { DB } from '@/db';
 import { estimateTokens, type AIProvider, type AIRequest, type AIResponse, type AIProviderOptions } from './provider';
 import { retrieve } from './knowledge';
 
+/** Short warm note in the learner's native language (offline provider). */
+const NATIVE_NOTES: Record<string, string> = {
+  zh: '欢迎！索莱（Solai）会一直用中文陪伴你学 Tamil。',
+  hi: 'नमस्ते! हम आपकी अपनी भाषा में भी समझाने की कोशिश करते हैं।',
+  es: '¡Hola! También te acompañamos en tu idioma mientras aprendes tamil.',
+  fr: 'Bonjour ! Nous vous accompagnons aussi dans votre langue pour apprendre le tamoul.',
+  ar: 'مرحباً! نرافقك بلغتك أيضاً أثناء تعلم اللغة التاميلية.',
+  bn: 'নমস্কার! তামিল শেখার পথে আপনার নিজের ভাষাতেই আমরা পাশে আছি।',
+  ru: 'Привет! Мы сопровождаем вас на вашем языке, пока вы изучаете тамильский.',
+  pt: 'Olá! Também te acompanhamos no seu idioma enquanto você aprende tâmil.',
+  id: 'Halo! Kami menemani kamu dalam bahasamu sendiri saat belajar bahasa Tamil.',
+  te: 'నమస్కారం! మీ సొంత భాషలోనే సహాయం చేస్తాము.',
+  ml: 'നമസ്കാരം! നിങ്ങളുടെ ഭാഷയിലും ഞങ്ങൾ ഒപ്പമുണ്ട്.',
+  kn: 'ನಮಸ್ಕಾರ! ನಿಮ್ಮ ಸ್ವಂತ ಭಾಷೆಯಲ್ಲೂ ನಾವು ನಿಮ್ಮೊಂದಿಗೆ ಇರುತ್ತೇವೆ.',
+};
+
 /**
  * LocalProvider — a fully offline, deterministic tutor.
  * It answers strictly from indexed platform content (BM25 retrieval),
@@ -51,6 +67,11 @@ export class LocalProvider implements AIProvider {
         answer += `\n• You are viewing **${req.context.label}** — ask me something from this lesson (e.g. *"explain the grammar in this lesson"*).`;
       }
     }
+
+
+    // Greet the learner in their native language (when it isn't English)
+    const note = req.language && req.language !== 'en' ? NATIVE_NOTES[req.language] : undefined;
+    if (note) answer += `\n\n_${note}_`;
 
     return {
       answer,

@@ -64,10 +64,13 @@ npm run db:reset     # wipe data/solai.db (self-reseeds on next boot)
 - Floating **AI Tamil Tutor** — context-aware per page (lesson content, vocab,
   workshop, FAQ), answers with Tamil script + transliteration + meaning
 - **Tamil-first UI** — Tamil leads, English supports it; a header language
-  switcher (தமிழ் / English / हिन्दी / తెలుగు / മലയാളം / ಕನ್ನಡ) re-renders the
-  chrome and is remembered per visitor (cookie) and per signed-in user
-  (profile). The AI tutor also adapts explanations to the learner's native
-  language while always keeping Tamil script + English visible.
+  switcher covers **14 languages** (தமிழ் / English / 中文 / हिन्दी / Español /
+  Français / العربية / বাংলা / Русский / Português / Bahasa Indonesia / తెలుగు /
+  മലയാളം / ಕನ್ನಡ) and is remembered per visitor (cookie) and per signed-in user
+  (profile). Registration and the profile ask "your language" — the world's 10
+  most-spoken languages plus the Indian regionals — and the AI tutor adapts
+  explanations to it (even the offline tutor closes answers with a warm note
+  in the learner's language) while always keeping Tamil script + English visible.
 - **Free Learning Resources** (`/resources`) — a separate `learning_resources`
   store (its own table, admin-managed) of curated free material from **NPTEL**
   (IIT video lectures + Tamil e-books), **YouTube** (embedded, click-to-load)

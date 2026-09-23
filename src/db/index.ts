@@ -60,6 +60,20 @@ export function getDb(): DB {
       );
       _db.exec('PRAGMA foreign_keys = ON;');
     }
+    // Migration: add the world's 10 languages to ai supported_languages (idempotent)
+    const slRow = _db.prepare('SELECT supported_languages FROM ai_provider_settings WHERE id = 1').get() as unknown as { supported_languages: string } | undefined;
+    if (slRow) {
+      try {
+        const list = new Set(JSON.parse(slRow.supported_languages) as string[]);
+        const all = ['ta', 'en', 'zh', 'hi', 'es', 'fr', 'ar', 'bn', 'ru', 'pt', 'id', 'te', 'ml', 'kn'];
+        const merged = [...list, ...all.filter((l) => !list.has(l))];
+        if (merged.length > list.size) {
+          _db.prepare('UPDATE ai_provider_settings SET supported_languages = ? WHERE id = 1').run(JSON.stringify(merged));
+        }
+      } catch {
+        /* leave the stored value untouched */
+      }
+    }
     const marker = _db.prepare("SELECT name FROM sqlite_master WHERE type='table' AND name='seed_meta'").get();
     if (!marker) {
       // First boot (or a previously interrupted seed): (re)seed the demo data.

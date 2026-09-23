@@ -11,9 +11,23 @@ const HERO_STATS = [
   { icon: '📚', label: 'Structured levels' },
   { icon: '🤖', label: 'AI Tamil Tutor' },
   { icon: '🎤', label: 'Workshops + certificates' },
-  { icon: '🌏', label: '5 explanation languages' },
+  { icon: '🌏', label: '14 learner languages' },
   { icon: '🎓', label: 'Free NPTEL · YT · Alison resources' },
   { icon: '🛕', label: '3D culture & heritage explorer' },
+];
+
+/** The world's most-spoken languages — Solai welcomes learners of all of them. */
+const WORLD_LANGS = [
+  { native: 'English', flag: '🇬🇧' },
+  { native: '中文', flag: '🇨🇳' },
+  { native: 'हिन्दी', flag: '🇮🇳' },
+  { native: 'Español', flag: '🇪🇸' },
+  { native: 'Français', flag: '🇫🇷' },
+  { native: 'العربية', flag: '🕌' },
+  { native: 'বাংলা', flag: '🇧🇩' },
+  { native: 'Русский', flag: '🇷🇺' },
+  { native: 'Português', flag: '🇧🇷' },
+  { native: 'Bahasa Indonesia', flag: '🇮🇩' },
 ];
 
 export default function HomePage() {
@@ -89,6 +103,28 @@ export default function HomePage() {
               🛕 Tamil culture
             </Link>
           </div>
+
+          {/* Learners of the world's languages are welcome */}
+          <div className="mt-10 max-w-3xl">
+            <p className="mb-2.5 text-xs font-semibold uppercase tracking-wider text-ink-500">
+              Learn Tamil from your language · உங்கள் மொழியிலிருந்து தமிழ் கற்றுக்கொள்ளுங்கள்
+            </p>
+            <div className="flex flex-wrap gap-1.5">
+              {WORLD_LANGS.map((l) => (
+                <span key={l.native} className="rounded-full border border-white/10 bg-white/5 px-3 py-1 text-xs font-medium text-ink-300 transition-colors hover:border-brand-400/40 hover:text-ink-100">
+                  <span aria-hidden className="mr-1">{l.flag}</span>
+                  {l.native}
+                </span>
+              ))}
+              <span className="rounded-full border border-brand-400/30 bg-brand-500/10 px-3 py-1 text-xs font-semibold text-brand-200">
+                + Telugu · Malayalam · Kannada
+              </span>
+            </div>
+            <p className="mt-2 text-[11px] text-ink-500">
+              The AI tutor explains in your language — always with Tamil script, transliteration and English.
+            </p>
+          </div>
+
           <div className="mt-12 grid max-w-3xl grid-cols-2 gap-3 sm:grid-cols-3">
             {HERO_STATS.map((s) => (
               <div key={s.label} className="glass px-4 py-3 text-xs font-medium text-ink-300 transition-colors hover:border-brand-400/40 sm:text-[13px]">

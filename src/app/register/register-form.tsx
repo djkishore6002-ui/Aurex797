@@ -2,15 +2,7 @@
 
 import { useState } from 'react';
 import { useRouter } from 'next/navigation';
-
-const LANGS = [
-  ['en', 'English'],
-  ['hi', 'Hindi'],
-  ['te', 'Telugu'],
-  ['ml', 'Malayalam'],
-  ['kn', 'Kannada'],
-  ['ta', 'Tamil'],
-];
+import { NATIVE_LANG_OPTIONS as LANGS } from '@/lib/i18n-data';
 
 export function Register() {
   const router = useRouter();
@@ -68,7 +60,7 @@ export function Register() {
       <div className="grid grid-cols-2 gap-3">
         <div>
           <label className="label" htmlFor="lang">
-            Your language
+            Your language <span className="font-normal text-ink-400">(we explain in it)</span>
           </label>
           <select id="lang" className="input" value={form.native_language} onChange={(e) => set('native_language', e.target.value)}>
             {LANGS.map(([v, l]) => (

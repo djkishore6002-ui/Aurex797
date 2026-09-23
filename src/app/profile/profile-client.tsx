@@ -3,14 +3,7 @@
 import { useState } from 'react';
 import { useRouter } from 'next/navigation';
 
-const LANGS: [string, string][] = [
-  ['en', 'English'],
-  ['hi', 'Hindi'],
-  ['te', 'Telugu'],
-  ['ml', 'Malayalam'],
-  ['kn', 'Kannada'],
-  ['ta', 'Tamil'],
-];
+import { NATIVE_LANG_OPTIONS as LANGS } from '@/lib/i18n-data';
 
 export function ProfileClient({
   user,

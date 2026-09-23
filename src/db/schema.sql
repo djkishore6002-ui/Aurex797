@@ -570,7 +570,7 @@ CREATE TABLE IF NOT EXISTS ai_provider_settings (
   model_strong TEXT,
   system_prompt TEXT,
   response_style TEXT NOT NULL DEFAULT 'encouraging',
-  supported_languages TEXT NOT NULL DEFAULT '["en","ta","hi","te","ml","kn"]',
+    supported_languages TEXT NOT NULL DEFAULT '["ta","en","zh","hi","es","fr","ar","bn","ru","pt","id","te","ml","kn"]',
   byoai_enabled INTEGER NOT NULL DEFAULT 1,
   daily_request_limit INTEGER NOT NULL DEFAULT 200,
   per_user_daily_limit INTEGER NOT NULL DEFAULT 50,
