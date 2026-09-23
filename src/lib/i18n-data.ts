@@ -59,6 +59,15 @@ export const NATIVE_LANG_OPTIONS: [Lang, string][] = [
 ];
 
 /**
+ * Display languages offered by the header switcher: **Tamil** (default,
+ * Tamil-first) and **English** (English-first for foreign learners).
+ * The other 12 languages are NOT display languages — they are the
+ * learner's *native* language options (registration / profile), which the
+ * AI tutor uses to explain Tamil in the learner's own language.
+ */
+export const DISPLAY_LANGS = LANGS.filter((l) => l.code === 'ta' || l.code === 'en');
+
+/**
  * Bilingual display pair. In `ta` (and other Indic settings) Tamil leads;
  * in `en` English leads with Tamil as support.
  */

@@ -2,7 +2,7 @@
 
 import { useEffect, useRef, useState } from 'react';
 import { useRouter } from 'next/navigation';
-import { LANGS } from '@/lib/i18n-data';
+import { DISPLAY_LANGS, LANGS } from '@/lib/i18n-data';
 
 /**
  * Display-language switcher (Tamil is the default / first preference).
@@ -76,7 +76,7 @@ export function LangSwitch({ current }: { current: string }) {
               switching works in the full Solai app.
             </p>
           )}
-          {LANGS.map((l) => (
+          {DISPLAY_LANGS.map((l) => (
             <button
               key={l.code}
               type="button"
@@ -93,6 +93,10 @@ export function LangSwitch({ current }: { current: string }) {
               {l.code === current && <span aria-hidden>✓</span>}
             </button>
           ))}
+          <p className="mt-1 border-t border-white/5 px-3 py-2 text-[10px] leading-relaxed text-ink-500">
+            🤖 The AI tutor speaks 14 languages — set your native language in
+            your profile and it will explain Tamil in it.
+          </p>
         </div>
       )}
     </div>

@@ -64,18 +64,21 @@ npm run db:reset     # wipe data/solai.db (self-reseeds on next boot)
 - Communities (join/post/comment/react/report), announcements, notifications
 - Floating **AI Tamil Tutor** — context-aware per page (lesson content, vocab,
   workshop, FAQ), answers with Tamil script + transliteration + meaning
-- **Tamil-first UI** — Tamil leads, English supports it; a header language
-  switcher covers **14 languages** (தமிழ் / English / 中文 / हिन्दी / Español /
-  Français / العربية / বাংলা / Русский / Português / Bahasa Indonesia / తెలుగు /
-  മലയാളം / ಕನ್ನಡ) and is remembered per visitor (cookie) and per signed-in user
-  (profile). Registration and the profile ask "your language" — the world's 10
-  most-spoken languages plus the Indian regionals — and the AI tutor adapts
-  explanations to it (even the offline tutor closes answers with a warm note
-  in the learner's language) while always keeping Tamil script + English visible.
+- **Tamil-first UI** — Tamil leads, English supports it. The header display
+  switcher offers **Tamil (default) and English** — the two fully localised
+  display modes — and is remembered per visitor (cookie) and per signed-in user
+  (profile). The other 12 languages (中文 / हिन्दी / Español / Français / العربية /
+  বাংলা / Русский / Português / Bahasa Indonesia + తెలుగు / മലയാളം / ಕನ್ನಡ) are
+  NOT display languages — they are the learner's *native* language options at
+  registration and in the profile, which the AI tutor uses to explain Tamil in
+  the learner's own language (even the offline tutor closes answers with a warm
+  note in that language) while always keeping Tamil script + English visible.
 - **Free Learning Resources** (`/resources`) — a separate `learning_resources`
   store (its own table, admin-managed) of curated free material from **NPTEL**
-  (IIT video lectures + Tamil e-books), **YouTube** (embedded, click-to-load)
-  and **Alison** (accredited courses), plus reference notes, books & guides.
+  (IIT video lectures + Tamil e-books), **YouTube** (embedded, click-to-load,
+  with a graceful "Watch on YouTube" fallback when a channel blocks embeds —
+  YouTube error 153) and **Alison** (accredited courses), plus reference notes,
+  books & guides and a **Live teaching** category of recorded lectures.
   Filter by type / provider / level, searchable, and surfaced per-course inside
   each lesson.
 - **Culture & Heritage Explorer** (`/culture`) — a 3D temple/heritage & museum
