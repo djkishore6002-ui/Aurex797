@@ -7,7 +7,7 @@
  * Offline-first learning content (downloads) is handled separately via IndexedDB
  * on the client — this SW intentionally does not cache lesson video streams.
  */
-const VERSION = 'solai-v1';
+const VERSION = 'solai-v2';
 const SHELL = `${VERSION}-shell`;
 const ASSETS = `${VERSION}-assets`;
 const CORE = ['/', '/manifest.json', '/icon.svg', '/learn', '/workshops', '/vocabulary', '/practice', '/community', '/faq'];
