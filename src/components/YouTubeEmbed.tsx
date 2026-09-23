@@ -3,13 +3,20 @@
 import { useEffect, useRef, useState } from 'react';
 
 /**
- * Click-to-load YouTube embed with graceful fallback.
+ * Click-to-load YouTube embed with a guaranteed way to watch.
  *
- * Shows a poster + play button first and mounts the player only on click
- * (keeps pages fast). The player is created through YouTube's IFrame API so
- * we can catch play-block errors — most importantly **error 153** ("cannot
- * be played in an iframe", the channel disabled embeds) — and swap in a clean
- * "Watch on YouTube ↗" card instead of a broken player.
+ * Poster + play button first. On click the player mounts (autoplay) through
+ * YouTube's IFrame API. Some channels switch off in-page embedding — YouTube
+ * then shows "Error 153" and may or may not report it via the API. We handle
+ * ALL cases so the user is never stuck on an error screen:
+ *
+ *  - onError fires            → open the video on YouTube in a new tab
+ *  - video never starts
+ *    playing within 10 s      → same fallback (catches silent 153s)
+ *  - IFrame API itself fails  → plain iframe + visible "Open on YouTube" link
+ *
+ * The fallback card is worded plainly (no error codes) and always carries a
+ * big ▶ button to YouTube.
  */
 
 type YTPlayer = { destroy?: () => void };
@@ -28,37 +35,61 @@ function loadYouTubeApi(): Promise<YTNamespace> {
   if (w.YT && w.YT.Player) return Promise.resolve(w.YT);
   if (apiPromise) return apiPromise;
   apiPromise = new Promise<YTNamespace>((resolve, reject) => {
+    let settled = false;
+    const fail = (msg: string) => {
+      if (!settled) {
+        settled = true;
+        reject(new Error(msg));
+      }
+    };
+    const ok = () => {
+      if (!settled) {
+        settled = true;
+        if (w.YT?.Player) resolve(w.YT);
+        else fail('YT namespace incomplete');
+      }
+    };
     const prev = w.onYouTubeIframeAPIReady;
     w.onYouTubeIframeAPIReady = () => {
       prev?.();
-      if (w.YT?.Player) resolve(w.YT);
-      else reject(new Error('YT namespace incomplete'));
+      ok();
     };
     const s = document.createElement('script');
     s.src = 'https://www.youtube.com/iframe_api';
     s.async = true;
-    s.onerror = () => reject(new Error('iframe_api failed to load'));
+    s.onerror = () => fail('iframe_api failed to load');
     document.head.appendChild(s);
-    // Safety: if the script never fires the callback, fail fast.
-    window.setTimeout(() => {
-      if (w.YT?.Player) resolve(w.YT);
-    }, 4000);
+    window.setTimeout(ok, 8000);
   });
   return apiPromise;
 }
 
-type State = 'idle' | 'loading' | 'playing' | 'blocked' | 'raw';
+type State = 'idle' | 'loading' | 'playing' | 'fallback' | 'raw';
 
 export function YouTubeEmbed({ videoId, title }: { videoId: string; title: string }) {
   const [state, setState] = useState<State>('idle');
+  const [opened, setOpened] = useState(false);
   const hostRef = useRef<HTMLDivElement>(null);
+  const timerRef = useRef<number | null>(null);
   const watchUrl = `https://www.youtube.com/watch?v=${videoId}`;
 
   useEffect(() => {
     return () => {
-      // player cleanup happens inside start(); nothing persistent to tear down here
+      if (timerRef.current) window.clearTimeout(timerRef.current);
     };
   }, []);
+
+  function openOnYouTube(): boolean {
+    const win = window.open(watchUrl, '_blank', 'noopener,noreferrer');
+    setOpened(Boolean(win));
+    return Boolean(win);
+  }
+
+  function toFallback() {
+    if (timerRef.current) window.clearTimeout(timerRef.current);
+    setState('fallback');
+    openOnYouTube();
+  }
 
   function start() {
     setState('loading');
@@ -69,36 +100,48 @@ export function YouTubeEmbed({ videoId, title }: { videoId: string; title: strin
         el.innerHTML = '';
         const mount = document.createElement('div');
         el.appendChild(mount);
+        // Safety net: if the video never reaches the PLAYING state
+        // (channel blocks embedding → silent error 153), bail out and
+        // open it on YouTube.
+        timerRef.current = window.setTimeout(toFallback, 10000);
         // eslint-disable-next-line @typescript-eslint/no-explicit-any
         new YT.Player(mount, {
           videoId,
           width: '100%',
           height: '100%',
-          playerVars: { rel: 0, modestbranding: 1, playsinline: 1 },
+          playerVars: { rel: 0, modestbranding: 1, playsinline: 1, autoplay: 1 },
           events: {
-            onReady: () => setState('playing'),
-            onError: () => setState('blocked'), // 153/150/100/101/… → not embeddable
+            // eslint-disable-next-line @typescript-eslint/no-explicit-any
+            onStateChange: (e: any) => {
+              if (e.data === 1) {
+                // PLAYING — inline playback is working.
+                if (timerRef.current) window.clearTimeout(timerRef.current);
+                setState('playing');
+              }
+            },
+            onError: () => toFallback(), // 153/150/101/… — not embeddable
           },
         });
       })
-      .catch(() => setState('raw')); // API unavailable (offline etc.) → plain iframe
+      .catch(() => setState('raw'));
   }
 
-  if (state === 'blocked') {
+  if (state === 'fallback') {
     return (
-      <div className="flex aspect-video w-full flex-col items-center justify-center gap-3 rounded-xl border border-amber-400/25 bg-black/40 p-4 text-center">
-        <span aria-hidden className="text-3xl">📺</span>
-        <p className="text-xs leading-relaxed text-amber-200/90">
-          This video can't be embedded — the channel has switched off in-page
-          playback (YouTube error 153).
+      <div className="flex aspect-video w-full flex-col items-center justify-center gap-3 rounded-xl border border-brand-400/30 bg-black/40 p-4 text-center">
+        <span aria-hidden className="text-3xl">▶</span>
+        <p className="tamil text-sm font-semibold leading-relaxed text-ink-100">
+          {opened
+            ? 'வீடியோ YouTube-இல் திறக்கப்பட்டது'
+            : 'வீடியோ இங்கே இயங்கவில்லை — YouTube-இல் பார்க்கவும்'}
         </p>
-        <a
-          href={watchUrl}
-          target="_blank"
-          rel="noopener noreferrer"
-          className="btn-primary px-5 py-2 text-sm"
-        >
-          ▶ Watch on YouTube
+        <p className="text-[11px] leading-relaxed text-ink-400">
+          {opened
+            ? 'The video was opened on YouTube in a new tab.'
+            : 'This video cannot play inside the page (the channel blocks embedding) — watch it on YouTube.'}
+        </p>
+        <a href={watchUrl} target="_blank" rel="noopener noreferrer" className="btn-primary px-5 py-2 text-sm">
+          ▶ YouTube-இல் பார்க்க <span className="hidden sm:inline">· Watch on YouTube</span>
         </a>
       </div>
     );
@@ -106,16 +149,26 @@ export function YouTubeEmbed({ videoId, title }: { videoId: string; title: strin
 
   if (state === 'raw') {
     return (
-      <div className="relative w-full overflow-hidden rounded-xl border border-white/10 bg-black shadow-glow-sm">
-        <div className="aspect-video">
-          <iframe
-            src={`https://www.youtube.com/embed/${videoId}?rel=0&modestbranding=1`}
-            title={title}
-            allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
-            allowFullScreen
-            className="h-full w-full"
-          />
+      <div>
+        <div className="relative w-full overflow-hidden rounded-xl border border-white/10 bg-black shadow-glow-sm">
+          <div className="aspect-video">
+            <iframe
+              src={`https://www.youtube.com/embed/${videoId}?rel=0&modestbranding=1`}
+              title={title}
+              allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+              allowFullScreen
+              className="h-full w-full"
+            />
+          </div>
         </div>
+        <a
+          href={watchUrl}
+          target="_blank"
+          rel="noopener noreferrer"
+          className="mt-1.5 inline-flex items-center gap-1 text-xs font-semibold text-brand-300 hover:text-brand-200"
+        >
+          ▶ Not playing? Open on YouTube
+        </a>
       </div>
     );
   }
@@ -131,6 +184,14 @@ export function YouTubeEmbed({ videoId, title }: { videoId: string; title: strin
           )}
           <div ref={hostRef} className="absolute inset-0" />
         </div>
+        <a
+          href={watchUrl}
+          target="_blank"
+          rel="noopener noreferrer"
+          className="absolute bottom-1.5 right-2 rounded bg-black/60 px-2 py-0.5 text-[10px] font-semibold text-white/80 opacity-0 transition hover:opacity-100"
+        >
+          ↗ YouTube
+        </a>
       </div>
     );
   }
