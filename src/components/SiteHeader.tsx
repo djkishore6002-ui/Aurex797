@@ -1,8 +1,9 @@
 import Link from 'next/link';
+import { cookies } from 'next/headers';
 import { getDb } from '@/db';
 import { getNav, type SiteSettings } from '@/lib/cms';
 import { getCurrentUser } from '@/lib/auth';
-import { getLang, bi, t } from '@/lib/i18n';
+import { getLang, bi, t, isLang } from '@/lib/i18n';
 import { NotificationBell } from '@/components/NotificationBell';
 import { SearchButton } from '@/components/SearchButton';
 import { UserMenu } from '@/components/UserMenu';
@@ -32,6 +33,10 @@ export function SiteHeader({ settings }: { settings: SiteSettings }) {
   const nav = getNav(db, 'header');
   const user = getCurrentUser();
   const lang = getLang();
+  // AI-tutor native language: profile when signed in, else the guest cookie.
+  // (Static snapshot build: no cookies, profile check already returns null.)
+  const nativeCookie = process.env.SOLAI_STATIC === '1' ? undefined : cookies().get('solai_native')?.value;
+  const native = user?.native_language ?? (isLang(nativeCookie) ? nativeCookie : null);
   return (
     <header className="sticky top-0 z-40 border-b border-white/10 bg-[#060913]/80 backdrop-blur-xl">
       <div className="container-page flex h-16 items-center gap-3">
@@ -66,7 +71,7 @@ export function SiteHeader({ settings }: { settings: SiteSettings }) {
         </nav>
 
         <div className="ml-auto flex items-center gap-1.5">
-          <LangSwitch current={lang} />
+          <LangSwitch current={lang} native={user?.native_language ?? null} />
           <SearchButton />
           {user && <NotificationBell />}
           {user ? (
