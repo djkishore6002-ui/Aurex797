@@ -117,14 +117,14 @@ export function WatchExperience({
       <div className="container-page grid gap-8 py-8 lg:grid-cols-[minmax(0,1fr)_330px]">
         <main className="min-w-0">
           {/* Player — glow-framed, the hero of the page */}
-          <div className="rounded-2xl bg-gradient-to-br from-brand-500/40 via-white/10 to-cyan-400/40 p-px shadow-glow-lg">
+          <div className="animate-fade-up rounded-2xl bg-gradient-to-br from-brand-500/40 via-white/10 to-cyan-400/40 p-px shadow-glow-lg">
             <div className="overflow-hidden rounded-2xl bg-[#0d1326]">
               <YouTubeEmbed videoId={resource.youtubeId} title={resource.title} onPlaying={markWatched} />
             </div>
           </div>
 
           {/* Title block */}
-          <div className="mt-6">
+          <div className="animate-fade-up mt-6 [animation-delay:80ms]">
             <div className="flex flex-wrap items-center gap-2">
               <span className="badge border border-red-400/30 bg-red-400/10 text-red-200">▶ YouTube</span>
               <span className="badge border border-cyan-400/30 bg-cyan-400/10 text-cyan-200">{langLabel}</span>
@@ -188,7 +188,7 @@ export function WatchExperience({
         </main>
 
         {/* Curriculum sidebar */}
-        <aside aria-label="Batch curriculum">
+        <aside aria-label="Batch curriculum" className="animate-fade-up [animation-delay:140ms]">
           <div className="card sticky top-20 max-h-[calc(100vh-6rem)] overflow-hidden p-0">
             <div className="border-b border-white/10 px-4 py-3">
               <h2 className="tamil text-sm font-bold text-ink-950">

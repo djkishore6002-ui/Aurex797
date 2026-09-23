@@ -54,6 +54,7 @@ const config: Config = {
       boxShadow: {
         glow: '0 0 40px -8px rgba(139, 92, 246, 0.5)',
         'glow-sm': '0 0 24px -6px rgba(139, 92, 246, 0.45)',
+        'glow-lg': '0 0 70px -12px rgba(139, 92, 246, 0.65)',
         'glow-cyan': '0 0 40px -10px rgba(34, 211, 238, 0.4)',
       },
       keyframes: {

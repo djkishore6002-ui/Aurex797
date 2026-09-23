@@ -3,6 +3,7 @@ import Link from 'next/link';
 import { getDb, plainRows } from '@/db';
 import { PageHead } from '@/components/ui';
 import { ResourcesBrowser, type ResourceRow } from '@/components/ResourcesBrowser';
+import { Reveal } from '@/components/Reveal';
 import { getLang, bi } from '@/lib/i18n';
 
 export const dynamic = process.env.SOLAI_STATIC === '1' ? undefined : 'force-dynamic';
@@ -67,13 +68,13 @@ export default function ResourcesPage() {
 
       {/* Provider spotlight */}
       <div className="mb-8 grid gap-4 md:grid-cols-3">
-        {PROVIDER_CARDS.map((p) => (
+        {PROVIDER_CARDS.map((p, i) => (
+          <Reveal key={p.name} delay={i * 90}>
           <a
-            key={p.name}
             href={p.href}
             target="_blank"
             rel="noopener noreferrer"
-            className="card group p-5 transition hover:border-brand-400/40 hover:shadow-glow-lg"
+            className="card group block p-5 transition hover:-translate-y-0.5 hover:border-brand-400/40 hover:shadow-glow-lg"
           >
             <div className="flex items-center gap-3">
               <span aria-hidden className="grid h-11 w-11 place-items-center rounded-xl bg-gradient-to-br from-brand-500/30 to-cyan-500/20 text-xl">
@@ -89,6 +90,7 @@ export default function ResourcesPage() {
             <p className="mt-3 text-xs leading-relaxed text-ink-400">{lang === 'en' ? p.body : p.taBody}</p>
             <p className="mt-1 text-[11px] text-ink-500">{lang === 'en' ? p.taBody : p.body}</p>
           </a>
+          </Reveal>
         ))}
       </div>
 
