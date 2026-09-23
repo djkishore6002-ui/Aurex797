@@ -1,29 +1,33 @@
 /*
  * Solai PWA service worker.
- * Strategy:
- *  - App shell (page navigations): network-first with cache fallback (offline start page)
- *  - Static assets (js/css/images): stale-while-revalidate
- *  - API + live content: network only (never serve stale data for auth/progress)
- * Offline-first learning content (downloads) is handled separately via IndexedDB
- * on the client — this SW intentionally does not cache lesson video streams.
+ *
+ * Strategy (correctness-first — a stale cache once shipped a broken
+ * player version to users, so page HTML is NEVER cached):
+ *  - Page navigations: NETWORK ONLY. The server is always the source of
+ *    truth; a hard refresh always gives the latest build.
+ *  - Hashed static assets (_next/static): stale-while-revalidate — safe,
+ *    because the filename hash is derived from the file content, so a
+ *    given URL can never change meaning.
+ *  - API + live content: network only (never serve stale data).
+ * Offline-first learning content (downloads) is handled separately via
+ * IndexedDB on the client — this SW intentionally does not cache
+ * lesson video streams.
  */
-const VERSION = 'solai-v2';
-const SHELL = `${VERSION}-shell`;
+const VERSION = 'solai-v3';
 const ASSETS = `${VERSION}-assets`;
-const CORE = ['/', '/manifest.json', '/icon.svg', '/learn', '/workshops', '/vocabulary', '/practice', '/community', '/faq'];
+const CORE = ['/manifest.json', '/icon.svg'];
 
 self.addEventListener('install', (e) => {
   e.waitUntil(
     (async () => {
-      const shell = await caches.open(SHELL);
+      const cache = await caches.open(ASSETS);
       for (const url of CORE) {
         try {
-          await shell.add(new Request(url, { mode: 'navigate' }));
+          await cache.add(url);
         } catch {
           /* ignore individual failures */
         }
       }
-      await caches.open(ASSETS);
       self.skipWaiting();
     })()
   );
@@ -32,6 +36,8 @@ self.addEventListener('install', (e) => {
 self.addEventListener('activate', (e) => {
   e.waitUntil(
     (async () => {
+      // Wipe every cache that isn't ours (this is what purges the old
+      // cached page HTML from previous versions).
       for (const key of await caches.keys()) {
         if (!key.startsWith(VERSION)) await caches.delete(key);
       }
@@ -49,37 +55,26 @@ self.addEventListener('fetch', (e) => {
   // Never cache: API routes, live data
   if (url.pathname.startsWith('/api/')) return;
 
-  // Navigations: network-first, fall back to shell
-  if (req.mode === 'navigate') {
+  // Page navigations: network only — never serve a cached copy of a page.
+  if (req.mode === 'navigate') return;
+
+  // Static assets: stale-while-revalidate (immutable hashed files).
+  if (url.pathname.startsWith('/_next/static/')) {
     e.respondWith(
       (async () => {
-        try {
-          const fresh = await fetch(req);
-          const cache = await caches.open(SHELL);
-          cache.put(req, fresh.clone());
-          return fresh;
-        } catch {
-          const cache = await caches.open(SHELL);
-          const cached = await cache.match(req) || (await cache.match('/'));
-          return cached || Response.error();
-        }
+        const cache = await caches.open(ASSETS);
+        const cached = await cache.match(req);
+        const network = fetch(req)
+          .then((res) => {
+            if (res.ok) cache.put(req, res.clone());
+            return res;
+          })
+          .catch(() => cached);
+        return cached || network;
       })()
     );
     return;
   }
 
-  // Static assets: stale-while-revalidate
-  e.respondWith(
-    (async () => {
-      const cache = await caches.open(ASSETS);
-      const cached = await cache.match(req);
-      const network = fetch(req)
-        .then((res) => {
-          if (res.ok) cache.put(req, res.clone());
-          return res;
-        })
-        .catch(() => cached);
-      return cached || network;
-    })()
-  );
+  // Everything else: network only.
 });

@@ -12,11 +12,13 @@ import { useEffect, useRef, useState } from 'react';
  *
  *  - onError fires            → open the video on YouTube in a new tab
  *  - video never starts
- *    playing within 10 s      → same fallback (catches silent 153s)
- *  - IFrame API itself fails  → plain iframe + visible "Open on YouTube" link
+ *    playing within 8 s       → same fallback (catches silent 153s)
+ *  - IFrame API itself fails  → clean card with a "Watch on YouTube" button
  *
- * The fallback card is worded plainly (no error codes) and always carries a
- * big ▶ button to YouTube.
+ * A poster+spinner cover stays over the embedded player until playback is
+ * confirmed, so YouTube's own error screen is never visible. The fallback
+ * card is worded plainly (no error codes) and always carries a big ▶ button
+ * to YouTube.
  */
 
 type YTPlayer = { destroy?: () => void };
@@ -69,6 +71,7 @@ type State = 'idle' | 'loading' | 'playing' | 'fallback' | 'raw';
 export function YouTubeEmbed({ videoId, title }: { videoId: string; title: string }) {
   const [state, setState] = useState<State>('idle');
   const [opened, setOpened] = useState(false);
+  const [showRawFrame, setShowRawFrame] = useState(false);
   const hostRef = useRef<HTMLDivElement>(null);
   const timerRef = useRef<number | null>(null);
   const watchUrl = `https://www.youtube.com/watch?v=${videoId}`;
@@ -103,7 +106,7 @@ export function YouTubeEmbed({ videoId, title }: { videoId: string; title: strin
         // Safety net: if the video never reaches the PLAYING state
         // (channel blocks embedding → silent error 153), bail out and
         // open it on YouTube.
-        timerRef.current = window.setTimeout(toFallback, 10000);
+        timerRef.current = window.setTimeout(toFallback, 8000);
         // eslint-disable-next-line @typescript-eslint/no-explicit-any
         new YT.Player(mount, {
           videoId,
@@ -148,27 +151,53 @@ export function YouTubeEmbed({ videoId, title }: { videoId: string; title: strin
   }
 
   if (state === 'raw') {
-    return (
-      <div>
-        <div className="relative w-full overflow-hidden rounded-xl border border-white/10 bg-black shadow-glow-sm">
-          <div className="aspect-video">
-            <iframe
-              src={`https://www.youtube.com/embed/${videoId}?rel=0&modestbranding=1`}
-              title={title}
-              allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
-              allowFullScreen
-              className="h-full w-full"
-            />
+    // The YouTube player library failed to load. Show the clean card first
+    // (a bare iframe here could display YouTube's own error screen); the
+    // in-page player is available on demand.
+    if (showRawFrame) {
+      return (
+        <div>
+          <div className="relative w-full overflow-hidden rounded-xl border border-white/10 bg-black shadow-glow-sm">
+            <div className="aspect-video">
+              <iframe
+                src={`https://www.youtube.com/embed/${videoId}?rel=0&modestbranding=1`}
+                title={title}
+                allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+                allowFullScreen
+                className="h-full w-full"
+              />
+            </div>
           </div>
+          <a
+            href={watchUrl}
+            target="_blank"
+            rel="noopener noreferrer"
+            className="mt-1.5 inline-flex items-center gap-1 text-xs font-semibold text-brand-300 hover:text-brand-200"
+          >
+            ▶ Not playing? Open on YouTube
+          </a>
         </div>
-        <a
-          href={watchUrl}
-          target="_blank"
-          rel="noopener noreferrer"
-          className="mt-1.5 inline-flex items-center gap-1 text-xs font-semibold text-brand-300 hover:text-brand-200"
-        >
-          ▶ Not playing? Open on YouTube
+      );
+    }
+    return (
+      <div className="flex aspect-video w-full flex-col items-center justify-center gap-3 rounded-xl border border-brand-400/30 bg-black/40 p-4 text-center">
+        <span aria-hidden className="text-3xl">▶</span>
+        <p className="tamil text-sm font-semibold leading-relaxed text-ink-100">
+          வீடியோ இங்கே load ஆகவில்லை — YouTube-இல் பார்க்கவும்
+        </p>
+        <p className="text-[11px] leading-relaxed text-ink-400">
+          The player could not be loaded right now — watch it on YouTube.
+        </p>
+        <a href={watchUrl} target="_blank" rel="noopener noreferrer" className="btn-primary px-5 py-2 text-sm">
+          ▶ YouTube-இல் பார்க்க <span className="hidden sm:inline">· Watch on YouTube</span>
         </a>
+        <button
+          type="button"
+          onClick={() => setShowRawFrame(true)}
+          className="text-[11px] text-ink-400 underline hover:text-ink-200"
+        >
+          or try the in-page player
+        </button>
       </div>
     );
   }
@@ -176,13 +205,25 @@ export function YouTubeEmbed({ videoId, title }: { videoId: string; title: strin
   if (state === 'loading' || state === 'playing') {
     return (
       <div className="relative w-full overflow-hidden rounded-xl border border-white/10 bg-black shadow-glow-sm">
-        <div className="aspect-video">
+        <div className="relative aspect-video">
+          <div ref={hostRef} className="absolute inset-0" />
+          {/* Cover stays over the player until playback is confirmed, so a
+              YouTube error screen can never be seen — the user only ever
+              sees the poster/spinner, the playing video, or the card. */}
           {state === 'loading' && (
-            <div className="grid h-full w-full place-items-center">
-              <span className="text-sm text-ink-400">Loading player…</span>
+            <div className="absolute inset-0 z-10 grid place-items-center bg-black">
+              {/* eslint-disable-next-line @next/next/no-img-element */}
+              <img
+                src={`https://img.youtube.com/vi/${videoId}/hqdefault.jpg`}
+                alt=""
+                className="absolute inset-0 h-full w-full object-cover opacity-60"
+              />
+              <div className="relative flex flex-col items-center gap-2">
+                <span className="h-9 w-9 animate-spin rounded-full border-4 border-white/30 border-t-white" />
+                <span className="text-xs text-white/80">இயங்குகிறது · Loading…</span>
+              </div>
             </div>
           )}
-          <div ref={hostRef} className="absolute inset-0" />
         </div>
         <a
           href={watchUrl}
