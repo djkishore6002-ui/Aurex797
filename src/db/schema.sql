@@ -588,7 +588,7 @@ CREATE TABLE IF NOT EXISTS user_ai_keys (
 
 CREATE TABLE IF NOT EXISTS ai_knowledge_documents (
   id INTEGER PRIMARY KEY AUTOINCREMENT,
-  source_type TEXT NOT NULL CHECK (source_type IN ('course','lesson','faq','page','workshop','announcement','vocabulary','scenario','help')),
+  source_type TEXT NOT NULL CHECK (source_type IN ('course','lesson','faq','page','workshop','announcement','vocabulary','scenario','help','resource','culture','district')),
   source_id INTEGER NOT NULL,
   title TEXT NOT NULL,
   content_text TEXT NOT NULL,
@@ -666,3 +666,64 @@ CREATE TABLE IF NOT EXISTS audit_logs (
 );
 CREATE INDEX IF NOT EXISTS idx_audit_created ON audit_logs(created_at);
 CREATE INDEX IF NOT EXISTS idx_audit_action ON audit_logs(action);
+
+/* ── Learning resources (NPTEL / YouTube / Alison / notes / books / guides) ── */
+CREATE TABLE IF NOT EXISTS learning_resources (
+  id INTEGER PRIMARY KEY AUTOINCREMENT,
+  course_id INTEGER REFERENCES courses(id) ON DELETE SET NULL,
+  lesson_id INTEGER REFERENCES lessons(id) ON DELETE CASCADE,
+  title TEXT NOT NULL,
+  title_tamil TEXT,
+  type TEXT NOT NULL CHECK (type IN ('video','note','book','guide','article','playlist','course')),
+  provider TEXT NOT NULL DEFAULT 'external' CHECK (provider IN ('npel','youtube','alison','pdf','website','other')),
+  url TEXT NOT NULL,
+  youtube_id TEXT,
+  description TEXT,
+  description_tamil TEXT,
+  language TEXT NOT NULL DEFAULT 'ta',
+  level TEXT,
+  sort_order INTEGER NOT NULL DEFAULT 0,
+  is_published INTEGER NOT NULL DEFAULT 1
+);
+CREATE INDEX IF NOT EXISTS idx_resources_course ON learning_resources(course_id);
+CREATE INDEX IF NOT EXISTS idx_resources_lesson ON learning_resources(lesson_id);
+CREATE INDEX IF NOT EXISTS idx_resources_type ON learning_resources(type);
+
+/* ── Culture explorer (temples, heritage, inscriptions, food, festivals, dance, music, dress, regions) ── */
+CREATE TABLE IF NOT EXISTS culture_items (
+  id INTEGER PRIMARY KEY AUTOINCREMENT,
+  category TEXT NOT NULL CHECK (category IN ('temple','heritage','inscription','food','festival','dance','music','dress','region','object','craft')),
+  slug TEXT NOT NULL UNIQUE,
+  title TEXT NOT NULL,
+  title_tamil TEXT NOT NULL,
+  subtitle TEXT,
+  subtitle_tamil TEXT,
+  meaning TEXT,
+  meaning_tamil TEXT,
+  description TEXT,
+  description_tamil TEXT,
+  region TEXT,
+  era TEXT,
+  image_url TEXT,
+  media_url TEXT,
+  facts_json TEXT NOT NULL DEFAULT '[]',
+  sort_order INTEGER NOT NULL DEFAULT 0,
+  is_published INTEGER NOT NULL DEFAULT 1
+);
+CREATE INDEX IF NOT EXISTS idx_culture_category ON culture_items(category);
+CREATE INDEX IF NOT EXISTS idx_culture_slug ON culture_items(slug);
+
+/* ── Tamil Nadu district explorer (virtual map) ── */
+CREATE TABLE IF NOT EXISTS tn_districts (
+  id INTEGER PRIMARY KEY AUTOINCREMENT,
+  name TEXT NOT NULL,
+  name_tamil TEXT NOT NULL,
+  zone TEXT NOT NULL DEFAULT 'south' CHECK (zone IN ('north','central','south','coast','west')),
+  famous_for TEXT,
+  culture TEXT,
+  language_note TEXT,
+  food TEXT,
+  temple TEXT,
+  festival TEXT,
+  sort_order INTEGER NOT NULL DEFAULT 0
+);

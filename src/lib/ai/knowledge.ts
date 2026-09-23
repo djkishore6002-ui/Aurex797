@@ -244,6 +244,20 @@ export function reindexAll(db: DB = getDb()): { documents: number; chunks: numbe
     }
   }
 
+  // Learning resources (NPTEL / YouTube / Alison / notes / books / guides)
+  for (const r of db.prepare('SELECT * FROM learning_resources WHERE is_published = 1').all() as unknown as { id: number; title: string; type: string; provider: string; url: string; description: string; language: string; level: string }[]) {
+    indexSource(db, 'resource', r.id, `Learning resource: ${r.title}`, `${r.type} · ${r.provider} · ${r.language}${r.level ? ` · ${r.level}` : ''}\n${r.description ?? ''}\nURL: ${r.url}`);
+  }
+  // Culture & heritage items
+  for (const ci of db.prepare('SELECT * FROM culture_items WHERE is_published = 1').all() as unknown as { id: number; title: string; title_tamil: string; category: string; description: string; facts_json: string; region: string }[]) {
+    const facts = (safeJson(ci.facts_json) as unknown as { l: string; v: string }[]).map((f) => `${f.l}: ${f.v}`).join('; ');
+    indexSource(db, 'culture', ci.id, `Culture: ${ci.title} (${ci.title_tamil})`, `${ci.category} · ${ci.region ?? ''}\n${ci.description ?? ''}\n${facts}`);
+  }
+  // Tamil Nadu districts
+  for (const d of db.prepare('SELECT * FROM tn_districts').all() as unknown as { id: number; name: string; name_tamil: string; famous_for: string; culture: string; food: string; temple: string; festival: string }[]) {
+    indexSource(db, 'district', d.id, `District: ${d.name} (${d.name_tamil})`, `Famous for: ${d.famous_for ?? ''}\nCulture: ${d.culture ?? ''}\nFood: ${d.food ?? ''}\nTemple: ${d.temple ?? ''}\nFestival: ${d.festival ?? ''}`);
+  }
+
   const docs = db.prepare("SELECT COUNT(*) AS c FROM ai_knowledge_documents WHERE status='current'").get() as unknown as { c: number };
   const chunks = db.prepare('SELECT COUNT(*) AS c FROM ai_knowledge_chunks').get() as unknown as { c: number };
   invalidateCache();

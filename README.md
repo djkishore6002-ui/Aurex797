@@ -63,14 +63,32 @@ npm run db:reset     # wipe data/solai.db (self-reseeds on next boot)
 - Communities (join/post/comment/react/report), announcements, notifications
 - Floating **AI Tamil Tutor** — context-aware per page (lesson content, vocab,
   workshop, FAQ), answers with Tamil script + transliteration + meaning
+- **Tamil-first UI** — Tamil leads, English supports it; a header language
+  switcher (தமிழ் / English / हिन्दी / తెలుగు / മലയാളം / ಕನ್ನಡ) re-renders the
+  chrome and is remembered per visitor (cookie) and per signed-in user
+  (profile). The AI tutor also adapts explanations to the learner's native
+  language while always keeping Tamil script + English visible.
+- **Free Learning Resources** (`/resources`) — a separate `learning_resources`
+  store (its own table, admin-managed) of curated free material from **NPTEL**
+  (IIT video lectures + Tamil e-books), **YouTube** (embedded, click-to-load)
+  and **Alison** (accredited courses), plus reference notes, books & guides.
+  Filter by type / provider / level, searchable, and surfaced per-course inside
+  each lesson.
+- **Culture & Heritage Explorer** (`/culture`) — a 3D temple/heritage & museum
+  stage (drag to rotate, scroll to zoom, pure CSS 3D), a virtual Tamil Nadu
+  district map, an inscription decoder (old Tamil-Brahmi → modern meaning),
+  food / dance / music / festival / dress galleries, regional Tamil, and a
+  gamified culture quiz. All content is seed-driven and indexed into the AI
+  tutor's knowledge base, so the tutor can answer culture questions too.
 
 **Organizer / Teacher** (`/organizer`)
 - Manage workshops & sessions, QR check-in/out, attendance review
 - Answer learner questions (teacher), with AI preliminary answers as a drafting aid
 
-**Super Admin** (`/admin`, 13 sections)
+**Super Admin** (`/admin`, 14 sections)
 - Dashboard analytics, users & organizers (RBAC), courses/modules/lessons/quizzes,
-  vocabulary, workshops & attendance, certificates + templates, announcements
+  vocabulary, workshops & attendance, **learning resources** (create / publish /
+  delete — NPTEL, YouTube, Alison, notes, books, guides), certificates + templates, announcements
   (global / course / workshop / community / single-user scoping), communities &
   moderation (hide/delete posts, reports), learner Q&A, AI provider settings
   (provider, models, prompts, limits, BYOAI toggle) with one-click knowledge

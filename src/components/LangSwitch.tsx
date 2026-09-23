@@ -1,0 +1,80 @@
+'use client';
+
+import { useEffect, useRef, useState } from 'react';
+import { useRouter } from 'next/navigation';
+import { LANGS } from '@/lib/i18n-data';
+
+/**
+ * Display-language switcher (Tamil is the default / first preference).
+ * Writes the choice to `/api/lang` (cookie + profile), then re-renders
+ * the server components so the new language takes effect immediately.
+ */
+export function LangSwitch({ current }: { current: string }) {
+  const [open, setOpen] = useState(false);
+  const [busy, setBusy] = useState(false);
+  const ref = useRef<HTMLDivElement>(null);
+  const router = useRouter();
+
+  useEffect(() => {
+    if (!open) return;
+    const onDoc = (e: MouseEvent) => {
+      if (ref.current && !ref.current.contains(e.target as Node)) setOpen(false);
+    };
+    document.addEventListener('mousedown', onDoc);
+    return () => document.removeEventListener('mousedown', onDoc);
+  }, [open]);
+
+  async function pick(code: string) {
+    if (busy) return;
+    setBusy(true);
+    try {
+      const res = await fetch('/api/lang', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ lang: code }),
+      });
+      if (res.ok) router.refresh();
+    } finally {
+      setBusy(false);
+      setOpen(false);
+    }
+  }
+
+  const active = LANGS.find((l) => l.code === current) ?? LANGS[0];
+
+  return (
+    <div ref={ref} className="relative" role="menu" aria-label="Language">
+      <button
+        type="button"
+        onClick={() => setOpen((v) => !v)}
+        className="flex items-center gap-1.5 rounded-lg border border-white/10 bg-white/5 px-2.5 py-1.5 text-xs font-medium text-ink-200 transition hover:border-brand-400/40 hover:bg-white/10"
+        aria-haspopup="listbox"
+        aria-expanded={open}
+      >
+        <span aria-hidden>🌐</span>
+        <span className="font-semibold">{active.native}</span>
+      </button>
+      {open && (
+        <div className="glass absolute right-0 z-50 mt-2 w-44 overflow-hidden rounded-xl p-1 shadow-glow-lg">
+          {LANGS.map((l) => (
+            <button
+              key={l.code}
+              type="button"
+              onClick={() => pick(l.code)}
+              disabled={busy}
+              className={`flex w-full items-center justify-between rounded-lg px-3 py-2 text-left text-xs transition ${
+                l.code === current ? 'bg-brand-500/20 text-brand-100' : 'text-ink-300 hover:bg-white/5 hover:text-ink-100'
+              }`}
+            >
+              <span>
+                <span className="block font-semibold">{l.native}</span>
+                {l.english !== l.native && <span className="block text-[10px] text-ink-400">{l.english}</span>}
+              </span>
+              {l.code === current && <span aria-hidden>✓</span>}
+            </button>
+          ))}
+        </div>
+      )}
+    </div>
+  );
+}

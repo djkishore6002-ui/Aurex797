@@ -11,6 +11,7 @@ const NAV: { href: string; label: string; icon: string; section: string }[] = [
   { href: '/admin/courses', label: 'Courses', icon: '📚', section: 'Content' },
   { href: '/admin/vocabulary', label: 'Vocabulary', icon: '📝', section: 'Content' },
   { href: '/admin/workshops', label: 'Workshops', icon: '🎤', section: 'Content' },
+  { href: '/admin/resources', label: 'Resources', icon: '🎓', section: 'Content' },
   { href: '/admin/certificates', label: 'Certificates', icon: '🎓', section: 'Content' },
   { href: '/admin/announcements', label: 'Announcements', icon: '📣', section: 'Content' },
   { href: '/admin/communities', label: 'Communities', icon: '🌿', section: 'Content' },

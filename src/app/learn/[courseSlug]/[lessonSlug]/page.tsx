@@ -73,6 +73,21 @@ export default function LessonPage({ params }: { params: { courseSlug: string; l
 
   const quiz = db.prepare('SELECT id, title FROM quizzes WHERE lesson_id = ? AND is_published = 1').get(lesson.id) as unknown as { id: number; title: string } | null;
 
+  // Free resources for this course (NPTEL / YouTube / Alison / notes)
+  const freeResources = db
+    .prepare(
+      `SELECT * FROM learning_resources WHERE is_published = 1 AND (lesson_id = ? OR (course_id = ? AND lesson_id IS NULL)) ORDER BY sort_order, id LIMIT 6`
+    )
+    .all(lesson.id, course.id) as unknown as {
+    id: number;
+    title: string;
+    title_tamil: string | null;
+    type: string;
+    provider: string;
+    url: string;
+    youtube_id: string | null;
+  }[];
+
   const user = getCurrentUser();
   const progress = user
     ? (db.prepare('SELECT * FROM lesson_progress WHERE user_id = ? AND lesson_id = ?').get(user.id, lesson.id) as unknown as { completion_percentage: number; last_position: number; completed_at: string | null } | null)
@@ -196,6 +211,42 @@ export default function LessonPage({ params }: { params: { courseSlug: string; l
               </div>
             </div>
           </div>
+
+          {/* Free resources for this course (NPTEL / YouTube / Alison) */}
+          {freeResources.length > 0 && (
+            <section className="mt-10" aria-label="Free resources">
+              <div className="mb-4 flex flex-wrap items-center justify-between gap-2">
+                <h2 className="text-lg font-bold text-ink-950">📚 Free resources for this course</h2>
+                <Link href="/resources" className="text-xs font-semibold text-brand-300 hover:underline">
+                  Full library →
+                </Link>
+              </div>
+              <div className="grid gap-3 sm:grid-cols-2">
+                {freeResources.map((r) => (
+                  <a
+                    key={r.id}
+                    href={r.url}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="card group flex items-center gap-3 p-4 transition hover:border-brand-400/40"
+                  >
+                    <span aria-hidden className="grid h-10 w-10 shrink-0 place-items-center rounded-xl bg-brand-50 text-lg">
+                      {r.youtube_id ? '▶' : r.type === 'video' || r.type === 'playlist' ? '🎬' : r.type === 'course' ? '🎓' : r.type === 'note' ? '📝' : r.type === 'book' ? '📕' : r.type === 'article' ? '📰' : '🧭'}
+                    </span>
+                    <span className="min-w-0">
+                      <span className="block truncate text-sm font-semibold text-ink-100 group-hover:text-brand-200">
+                        {r.title_tamil || r.title}
+                      </span>
+                      <span className="block truncate text-[11px] text-ink-500">
+                        {r.title} · <span className="uppercase">{r.provider}</span>
+                      </span>
+                    </span>
+                    <span aria-hidden className="ml-auto text-ink-500 transition group-hover:translate-x-0.5">↗</span>
+                  </a>
+                ))}
+              </div>
+            </section>
+          )}
 
           {/* Prev / next */}
           <div className="mt-8 grid gap-3 sm:grid-cols-2">

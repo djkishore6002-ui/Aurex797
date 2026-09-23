@@ -28,6 +28,38 @@ export function getDb(): DB {
     const schemaPath = path.resolve(process.cwd(), 'src/db/schema.sql');
     const schema = fs.readFileSync(schemaPath, 'utf8');
     _db.exec(schema);
+    // Lightweight forward migrations (schema.sql is CREATE-IF-NOT-EXISTS only)
+    try {
+      _db.exec("ALTER TABLE users ADD COLUMN display_language TEXT DEFAULT 'ta'");
+    } catch {
+      /* column already exists */
+    }
+    // Migration: extend ai_knowledge_documents.source_type CHECK with
+    // 'resource' | 'culture' | 'district' (fresh DBs already have it).
+    const docSql = String(
+      (_db.prepare("SELECT sql FROM sqlite_master WHERE type='table' AND name='ai_knowledge_documents'").get() as unknown as { sql: string } | undefined)?.sql ?? ''
+    );
+    if (docSql && !docSql.includes("'resource'")) {
+      _db.exec('PRAGMA foreign_keys = OFF;');
+      _db.exec(
+        `CREATE TABLE ai_knowledge_documents_migrate (
+           id INTEGER PRIMARY KEY AUTOINCREMENT,
+           source_type TEXT NOT NULL CHECK (source_type IN ('course','lesson','faq','page','workshop','announcement','vocabulary','scenario','help','resource','culture','district')),
+           source_id INTEGER NOT NULL,
+           title TEXT NOT NULL,
+           content_text TEXT NOT NULL,
+           status TEXT NOT NULL DEFAULT 'current' CHECK (status IN ('current','stale')),
+           indexed_at TEXT,
+           updated_at TEXT NOT NULL DEFAULT (datetime('now')),
+           UNIQUE (source_type, source_id)
+         );
+         INSERT INTO ai_knowledge_documents_migrate (id, source_type, source_id, title, content_text, status, indexed_at, updated_at)
+           SELECT id, source_type, source_id, title, content_text, status, indexed_at, updated_at FROM ai_knowledge_documents;
+         DROP TABLE ai_knowledge_documents;
+         ALTER TABLE ai_knowledge_documents_migrate RENAME TO ai_knowledge_documents;`
+      );
+      _db.exec('PRAGMA foreign_keys = ON;');
+    }
     const marker = _db.prepare("SELECT name FROM sqlite_master WHERE type='table' AND name='seed_meta'").get();
     if (!marker) {
       // First boot (or a previously interrupted seed): (re)seed the demo data.

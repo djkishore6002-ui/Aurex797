@@ -10,8 +10,10 @@ export const dynamic = 'force-dynamic';
 const HERO_STATS = [
   { icon: '📚', label: 'Structured levels' },
   { icon: '🤖', label: 'AI Tamil Tutor' },
-  { icon: '🎤', label: 'Live workshops + 90% certificates' },
+  { icon: '🎤', label: 'Workshops + certificates' },
   { icon: '🌏', label: '5 explanation languages' },
+  { icon: '🎓', label: 'Free NPTEL · YT · Alison resources' },
+  { icon: '🛕', label: '3D culture & heritage explorer' },
 ];
 
 export default function HomePage() {
@@ -64,6 +66,10 @@ export default function HomePage() {
             </span>
             <span className="tamil">{settings.tagline}</span>
           </p>
+          {/* Tamil-first greeting line */}
+          <p aria-hidden className="tamil mb-3 text-2xl font-bold text-marigold-300/90 sm:text-3xl">
+            வணக்கம்! தமிழ் கற்போம்.
+          </p>
           <h1 className="max-w-3xl text-4xl font-extrabold leading-[1.08] tracking-tight text-gradient-soft sm:text-5xl lg:text-6xl">
             {settings.hero_title}
           </h1>
@@ -76,8 +82,14 @@ export default function HomePage() {
             <Link href="/workshops" className="btn-secondary px-7 py-3.5 text-base">
               See live workshops
             </Link>
+            <Link href="/resources" className="btn-secondary px-7 py-3.5 text-base">
+              🎓 Free resources
+            </Link>
+            <Link href="/culture" className="btn-secondary px-7 py-3.5 text-base">
+              🛕 Tamil culture
+            </Link>
           </div>
-          <div className="mt-12 grid max-w-3xl grid-cols-2 gap-3 sm:grid-cols-4">
+          <div className="mt-12 grid max-w-3xl grid-cols-2 gap-3 sm:grid-cols-3">
             {HERO_STATS.map((s) => (
               <div key={s.label} className="glass px-4 py-3 text-xs font-medium text-ink-300 transition-colors hover:border-brand-400/40 sm:text-[13px]">
                 <span aria-hidden className="mr-1.5">{s.icon}</span>

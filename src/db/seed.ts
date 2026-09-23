@@ -1,5 +1,6 @@
 import { hashPassword } from '@/lib/auth';
 import { reindexAll } from '@/lib/ai/knowledge';
+import { seedContentResources } from '@/db/seed-content';
 import type { DB } from './index';
 
 /**
@@ -63,13 +64,17 @@ export function seedDatabase(db: DB): void {
     ['header', 'Workshops', '/workshops', 2],
     ['header', 'Vocabulary', '/vocabulary', 3],
     ['header', 'Practice', '/practice', 4],
-    ['header', 'Community', '/community', 5],
-    ['header', 'FAQ', '/faq', 6],
+    ['header', 'Resources', '/resources', 5],
+    ['header', 'Culture', '/culture', 6],
+    ['header', 'Community', '/community', 7],
+    ['header', 'FAQ', '/faq', 8],
     ['mobile', 'Home', '/dashboard', 1],
     ['mobile', 'Learn', '/learn', 2],
     ['mobile', 'Workshops', '/workshops', 3],
-    ['mobile', 'Community', '/community', 4],
-    ['mobile', 'AI', '/dashboard?ai=1', 5],
+    ['mobile', 'Resources', '/resources', 4],
+    ['mobile', 'Culture', '/culture', 5],
+    ['mobile', 'Community', '/community', 6],
+    ['mobile', 'AI', '/dashboard?ai=1', 7],
   ].forEach((n) => insNav.run(n[0] as string, n[1] as string, n[2] as string, n[3] as number));
 
   const insFooter = db.prepare('INSERT INTO footer_links (column_label, label, href, sort_order, is_published) VALUES (?,?,?,?,1)');
@@ -77,6 +82,10 @@ export function seedDatabase(db: DB): void {
     ['Learn', 'Courses', '/learn', 1],
     ['Learn', 'Vocabulary', '/vocabulary', 2],
     ['Learn', 'Practice scenarios', '/practice', 3],
+    ['Learn', 'Free resources', '/resources', 4],
+    ['Culture', 'Culture & heritage', '/culture', 1],
+    ['Culture', 'Virtual TN map', '/culture/map', 2],
+    ['Culture', 'Culture quiz', '/culture/quiz', 3],
     ['Platform', 'Workshops', '/workshops', 1],
     ['Platform', 'Community', '/community', 2],
     ['Platform', 'FAQ', '/faq', 3],
@@ -722,12 +731,15 @@ export function seedDatabase(db: DB): void {
   db.prepare('INSERT INTO audit_logs (actor_id, actor_email, action, entity, entity_id) VALUES (?,?,?,?,?)').run(adminId, 'admin@solai.test', 'ADMIN_CREATED_COURSE', 'course', c1);
   db.prepare('INSERT INTO audit_logs (actor_id, actor_email, action, entity, entity_id) VALUES (?,?,?,?,?)').run(organizerId, 'organizer@solai.test', 'ORGANIZER_UPDATED_WORKSHOP', 'workshop', w1);
 
+  /* ── Separate store: learning resources (NPTEL/YouTube/Alison) + culture explorer ── */
+  seedContentResources(db);
+
   /* ── Index everything into the AI knowledge base ── */
   const stats = reindexAll(db);
 
   /* Seed-complete marker (self-healing boot) */
   db.exec('CREATE TABLE IF NOT EXISTS seed_meta (key TEXT PRIMARY KEY, value TEXT)');
-  db.prepare("INSERT INTO seed_meta (key, value) VALUES ('seed_version', '1') ON CONFLICT(key) DO UPDATE SET value = excluded.value").run();
+  db.prepare("INSERT INTO seed_meta (key, value) VALUES ('seed_version', '2') ON CONFLICT(key) DO UPDATE SET value = excluded.value").run();
 
   console.log(`[seed] done — ${stats.documents} knowledge documents, ${stats.chunks} chunks indexed.`);
 }
