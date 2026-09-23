@@ -8,15 +8,25 @@ import { LANGS } from '@/lib/i18n-data';
  * Display-language switcher (Tamil is the default / first preference).
  * Writes the choice to `/api/lang` (cookie + profile), then re-renders
  * the server components so the new language takes effect immediately.
+ *
+ * On the static GitHub Pages snapshot (NEXT_PUBLIC_SOLAI_STATIC=1) there is
+ * no server to change the baked-in display language, so picking a language
+ * shows a friendly notice instead of failing silently.
  */
+const IS_STATIC = process.env.NEXT_PUBLIC_SOLAI_STATIC === '1';
+
 export function LangSwitch({ current }: { current: string }) {
   const [open, setOpen] = useState(false);
   const [busy, setBusy] = useState(false);
+  const [notice, setNotice] = useState(false);
   const ref = useRef<HTMLDivElement>(null);
   const router = useRouter();
 
   useEffect(() => {
-    if (!open) return;
+    if (!open) {
+      setNotice(false);
+      return;
+    }
     const onDoc = (e: MouseEvent) => {
       if (ref.current && !ref.current.contains(e.target as Node)) setOpen(false);
     };
@@ -25,6 +35,10 @@ export function LangSwitch({ current }: { current: string }) {
   }, [open]);
 
   async function pick(code: string) {
+    if (IS_STATIC) {
+      setNotice(true);
+      return;
+    }
     if (busy) return;
     setBusy(true);
     try {
@@ -55,7 +69,13 @@ export function LangSwitch({ current }: { current: string }) {
         <span className="font-semibold">{active.native}</span>
       </button>
       {open && (
-        <div className="glass absolute right-0 z-50 mt-2 w-44 overflow-hidden rounded-xl p-1 shadow-glow-lg">
+        <div className="glass absolute right-0 z-50 mt-2 w-56 overflow-hidden rounded-xl p-1 shadow-glow-lg">
+          {notice && (
+            <p className="mb-1 rounded-lg border border-amber-400/20 bg-amber-400/10 px-3 py-2 text-[11px] leading-relaxed text-amber-200">
+              📸 This public snapshot shows the Tamil-first display. Language
+              switching works in the full Solai app.
+            </p>
+          )}
           {LANGS.map((l) => (
             <button
               key={l.code}

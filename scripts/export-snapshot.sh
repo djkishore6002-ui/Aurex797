@@ -25,7 +25,11 @@ if [ ! -f data/solai.db ]; then
 fi
 
 STASH=".static-stash"
+# SOLAI_STATIC: server-side (cookies() guards, generateStaticParams)
+# NEXT_PUBLIC_SOLAI_STATIC: client components (e.g. LangSwitch shows a
+# notice instead of POSTing to the nonexistent /api/lang on Pages)
 export SOLAI_STATIC=1
+export NEXT_PUBLIC_SOLAI_STATIC=1
 
 # Routes that require the Node server (APIs, auth, dashboards) are not part of
 # the static mirror — move them out of src/app while the export build runs.

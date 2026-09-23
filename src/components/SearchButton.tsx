@@ -32,12 +32,15 @@ export function SearchButton() {
     return () => window.removeEventListener('keydown', onKey);
   }, [open]);
 
+  const IS_STATIC = process.env.NEXT_PUBLIC_SOLAI_STATIC === '1';
+
   useEffect(() => {
     if (!q.trim()) {
       setResults([]);
       setCounts({});
       return;
     }
+    if (IS_STATIC) return; // static mirror: no /api/search
     setLoading(true);
     const t = setTimeout(() => {
       fetch(`/api/search?q=${encodeURIComponent(q)}${type ? `&type=${type}` : ''}`)
@@ -111,7 +114,12 @@ export function SearchButton() {
                   ))}
                 </div>
               )}
-              {!loading && q && results.length === 0 && <p className="p-8 text-center text-sm text-ink-500">No results for “{q}”. Try a Tamil word like தேநீர் 🙏</p>}
+              {IS_STATIC && q.trim() && (
+                <p className="p-8 text-center text-sm text-ink-500">
+                  📸 Live search runs in the full Solai app — this public snapshot is a static mirror.
+                </p>
+              )}
+              {!IS_STATIC && !loading && q && results.length === 0 && <p className="p-8 text-center text-sm text-ink-500">No results for “{q}”. Try a Tamil word like தேநீர் 🙏</p>}
               {!loading && q && results.length > 0 && (
                 <ul>
                   {results.map((r, i) => (

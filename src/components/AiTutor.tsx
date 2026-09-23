@@ -84,6 +84,21 @@ export function AiTutor({ context }: { context?: TutorContext }) {
       setInput('');
       setError(null);
       setMessages((m) => [...m, { role: 'user', content: q }]);
+      // Static GitHub Pages snapshot: no Node server, so the tutor can't run.
+      if (process.env.NEXT_PUBLIC_SOLAI_STATIC === '1') {
+        setMessages((m) => [
+          ...m,
+          {
+            role: 'assistant',
+            content:
+              '📸 I run on the full Solai app — this public snapshot is a static mirror, so I can\'t answer here. Every course, resource and page is still fully browsable!',
+            provider: 'snapshot',
+            cached: false,
+            rating: null,
+          },
+        ]);
+        return;
+      }
       setBusy(true);
       try {
         const res = await fetch('/api/ai/chat', {
