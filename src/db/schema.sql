@@ -674,7 +674,7 @@ CREATE TABLE IF NOT EXISTS learning_resources (
   lesson_id INTEGER REFERENCES lessons(id) ON DELETE CASCADE,
   title TEXT NOT NULL,
   title_tamil TEXT,
-  type TEXT NOT NULL CHECK (type IN ('video','note','book','guide','article','playlist','course')),
+  type TEXT NOT NULL CHECK (type IN ('video','note','book','guide','article','playlist','course','live_class')),
   provider TEXT NOT NULL DEFAULT 'external' CHECK (provider IN ('npel','youtube','alison','pdf','website','other')),
   url TEXT NOT NULL,
   youtube_id TEXT,

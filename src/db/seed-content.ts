@@ -66,6 +66,89 @@ export function seedContentResources(db: DB): void {
     'Open-access recorded lectures and study material from NPTEL, IIT Kharagpur — courses in Tamil, Hindi and many Indian languages.',
     'தமிழ், இந்தி உள்ளிட்ட மொழிகளில் இலவச சொற்பொழிவுகள்.', 'multi', 'intermediate', 31);
 
+
+  // Live teaching — recorded classes & lectures on YouTube (Sangam literature,
+  // TNPSC/UPSC Tamil history, temples, inscriptions, food, Silambam & culture).
+  // Shared via the Kaviyarasi batch; more lectures are added as they arrive.
+  insRes.run(null, null, "\u0b9a\u0b99\u0bcd\u0b95 \u0b87\u0bb2\u0b95\u0bcd\u0b95\u0bbf\u0baf\u0bae\u0bcd/\u0b9a\u0b99\u0bcd\u0b95 \u0b87\u0bb2\u0b95\u0bcd\u0b95\u0bbf\u0baf\u0ba4\u0bcd\u0ba4\u0bbf\u0ba9\u0bcd \u0bae\u0bbe\u0ba3\u0bcd\u0baa\u0bc1\u0b95\u0bb3\u0bcd/TNPSC/TAMIL/sangam literatur/\u0b8e\u0b9f\u0bcd\u0b9f\u0bc1\u0ba4\u0bcd\u0ba4\u0bca\u0b95\u0bc8/Ettuthogai", null, 'live_class', 'youtube', 'https://www.youtube.com/watch?v=Ll-Kzuprp3s', 'Ll-Kzuprp3s',
+    "Recorded live teaching \u00b7 \u0ba4\u0bae\u0bbf\u0bb4\u0bcd\u0b95\u0ba3\u0bc7\u0bb7\u0bcd", null, 'ta', null, 40);
+  insRes.run(null, null, "\u0938\u0902\u0917\u092e \u0938\u093e\u0939\u093f\u0924\u094d\u092f | Sangam Literature | Tamil Classics & Culture |  UPSC CSE 2026-27 | B L Trivedi", null, 'live_class', 'youtube', 'https://www.youtube.com/watch?v=j9DbKbfJ1vI', 'j9DbKbfJ1vI',
+    "Recorded live teaching \u00b7 CKS Academy", null, 'en', null, 41);
+  insRes.run(null, null, "Sthala Puranas | Part 5 | by Sri PR Kannan | 20Feb22 | Patanjali | Mahabhashyam | 1000 pillared", null, 'live_class', 'youtube', 'https://www.youtube.com/watch?v=Ow8eiLJtZ6U', 'Ow8eiLJtZ6U',
+    "Recorded live teaching \u00b7 Sri Kanchi Kamakoti Peetam, Kanchipuram", null, 'en', null, 42);
+  insRes.run(null, null, "Sthala Puranas | Part 11 | by Sri PR Kannan | 03Apr22 | @ 6PM | Sri Parthasarathy Swamy Temple", null, 'live_class', 'youtube', 'https://www.youtube.com/watch?v=I5VVt1wpGlo', 'I5VVt1wpGlo',
+    "Recorded live teaching \u00b7 Thanjavur Parampara", null, 'en', null, 43);
+  insRes.run(null, null, "Sthala Puranas | Part 12 | by Sri PR Kannan | 10Apr22 | @ 6PM | Sri Jayantipura Mahatmyam |", null, 'live_class', 'youtube', 'https://www.youtube.com/watch?v=9Pkd3_nrgzc', '9Pkd3_nrgzc',
+    "Recorded live teaching \u00b7 Sri Kanchi Kamakoti Peetam, Kanchipuram", null, 'en', null, 44);
+  insRes.run(null, null, "Ancient Tamil Nadu SECRETS That Will Change How You See History | Malavika Binny | TRS", null, 'live_class', 'youtube', 'https://www.youtube.com/watch?v=hdzasYoSmGk', 'hdzasYoSmGk',
+    "Recorded live teaching \u00b7 BeerBiceps", null, 'en', null, 45);
+  insRes.run(null, null, "Kundalakesi Story in Tamil | \u0b95\u0bc1\u0ba3\u0bcd\u0b9f\u0bb2\u0b95\u0bc7\u0b9a\u0bbf \u0b95\u0ba4\u0bc8 | Aimperum Kappiyangal | AppleBox Sabari", null, 'live_class', 'youtube', 'https://www.youtube.com/watch?v=WnhKueN1myc', 'WnhKueN1myc',
+    "Recorded live teaching \u00b7 APPLEBOX By Sabari", null, 'ta', null, 46);
+  insRes.run(null, null, "GREAT EPIC OF POST SANGAM LITERATURE  - MANIMEGHALAI - IN TAMIL WITH SHORT NOTES #TnpscVetripaadhai", null, 'live_class', 'youtube', 'https://www.youtube.com/watch?v=UjPUhSBS5ME', 'UjPUhSBS5ME',
+    "Recorded live teaching \u00b7 TNPSC Vetripaadhai", null, 'en', null, 47);
+  insRes.run(null, null, "Gangai Konda Cholapuram | Virtual Tour of \u0b99\u0b99\u0bcd\u0b95\u0bc8 \u0b95\u0b95\u0bcd\u0b95\u0bcb\u0ba9\u0bcd\u0b9f \u0b9a\u0bcb\u0bb4\u0baa\u0bc1\u0bb0\u0bae\u0bcd | Weekend Getaway From Chennai \ud83c\udfcd\ud83d\ude98", null, 'live_class', 'youtube', 'https://www.youtube.com/watch?v=IPfKydF-Py8', 'IPfKydF-Py8',
+    "Recorded live teaching \u00b7 WORLD OF SPARK", null, 'ta', null, 48);
+  insRes.run(null, null, "Dance in Early Tamilakam by Prof. Mahalakshmi Ramakrishnan", null, 'live_class', 'youtube', 'https://www.youtube.com/watch?v=4ReLkXJGt5w', '4ReLkXJGt5w',
+    "Recorded live teaching \u00b7 University of Hyderabad", null, 'en', null, 49);
+  insRes.run(null, null, "Sucheendram Temple Legends & Epigraphy| Dr G Sankara Narayanan | #NAM2020 Online | Lakshmi Ramaswamy", null, 'live_class', 'youtube', 'https://www.youtube.com/watch?v=d2lz3ayu-cg', 'd2lz3ayu-cg',
+    "Recorded live teaching \u00b7 Lakshmi Ramaswamy's Sri Mudhraalaya", null, 'en', null, 50);
+  insRes.run(null, null, "Keezhadi excavation findings - full details | \u0b95\u0bc0\u0bb4\u0b9f\u0bbf \u0b87\u0ba8\u0bcd\u0ba4\u0bbf\u0baf \u0bb5\u0bb0\u0bb2\u0bbe\u0bb1\u0bcd\u0bb1\u0bc8\u0baf\u0bc7  \u0ba4\u0bbf\u0bb0\u0bc1\u0ba4\u0bcd\u0ba4\u0bbf \u0b8e\u0bb4\u0bc1\u0ba4\u0bc1\u0bae\u0bbe? | Keeladi", null, 'live_class', 'youtube', 'https://www.youtube.com/watch?v=IrV6wC_Fvdc', 'IrV6wC_Fvdc',
+    "Recorded live teaching \u00b7 BBC News Tamil", null, 'ta', null, 51);
+  insRes.run(null, null, "The Oldest Settlements in South India: The Keeladi Excavations", null, 'live_class', 'youtube', 'https://www.youtube.com/watch?v=XOXFTwb9GnA', 'XOXFTwb9GnA',
+    "Recorded live teaching \u00b7 Storytrails", null, 'en', null, 52);
+  insRes.run(null, null, "\u0b9a\u0b99\u0bcd\u0b95 \u0b95\u0bbe\u0bb2\u0bae\u0bcd \u0b95\u0bc1\u0bb1\u0bbf\u0ba4\u0bcd\u0ba4\u0bc1 \u0b95\u0bc0\u0bb4\u0b9f\u0bbf \u0b85\u0b95\u0bb4\u0bcd\u0bb5\u0bbe\u0bb0\u0bbe\u0baf\u0bcd\u0b9a\u0bcd\u0b9a\u0bbf \u0b9a\u0bc6\u0bbe\u0bb2\u0bcd\u0bb5\u0ba4\u0bc1 \u0b8e\u0ba9\u0bcd\u0ba9? | \u0b85\u0bae\u0bb0\u0bcd\u0ba8\u0bbe\u0ba4\u0bcd \u0bb0\u0bbe\u0bae\u0b95\u0bbf\u0bb0\u0bc1\u0bb7\u0bcd\u0ba3\u0bbe | Keeladi Excavation", null, 'live_class', 'youtube', 'https://www.youtube.com/watch?v=AzU9filsWtQ', 'AzU9filsWtQ',
+    "Recorded live teaching \u00b7 KULUKKAI", null, 'ta', null, 53);
+  insRes.run(null, null, "\u0b9a\u0bbf\u0bb2\u0baa\u0bcd\u0baa\u0ba4\u0bbf\u0b95\u0bbe\u0bb0\u0bae\u0bcd \u0baa\u0bc1\u0b95\u0bbe\u0bb0\u0bcd\u0b95\u0bcd \u0b95\u0bbe\u0ba3\u0bcd\u0b9f\u0bae\u0bcd \u0bae\u0bc1\u0bb4\u0bc1\u0ba4\u0bcd\u0ba4\u0bca\u0b95\u0bc1\u0baa\u0bcd\u0baa\u0bc1 l G Gnanasambandan l #Silappathikaram #Puharkaandam", null, 'live_class', 'youtube', 'https://www.youtube.com/watch?v=_Dvppw1CGq4', '_Dvppw1CGq4',
+    "Recorded live teaching \u00b7 G Gnanasambandan", null, 'ta', null, 54);
+  insRes.run(null, null, "Did elephants haul tonnes of rock 200 feet up to the top of this temple?", null, 'live_class', 'youtube', 'https://www.youtube.com/watch?v=BgJ6oS6oCtI', 'BgJ6oS6oCtI',
+    "Recorded live teaching \u00b7 HISTORY TV18", null, 'en', null, 55);
+  insRes.run(null, null, "Thanjai Periya Kovil History in Tamil  | Thanjai Periya Kovil TOUR | Raja Raja Cholan Temple", null, 'live_class', 'youtube', 'https://www.youtube.com/watch?v=MU32pzCgQiY', 'MU32pzCgQiY',
+    "Recorded live teaching \u00b7 Ungal Anban Hemanth", null, 'en', null, 56);
+  insRes.run(null, null, "Brihadeeswara Temple, a Marvelous landmark in South India | Sancharam | CHETTINAD | Safari TV", null, 'live_class', 'youtube', 'https://www.youtube.com/watch?v=YFw2SG7-vRo', 'YFw2SG7-vRo',
+    "Recorded live teaching \u00b7 Safari", null, 'en', null, 57);
+  insRes.run(null, null, "Evolution of Tamil with Dr E Jeeva", null, 'live_class', 'youtube', 'https://www.youtube.com/watch?v=5ikMK9_sXFs', '5ikMK9_sXFs',
+    "Recorded live teaching \u00b7 What You Missed In Tamil Class", null, 'en', null, 58);
+  insRes.run(null, null, "Tamil brahmi inscriptions and paintings created by the ancient man 4000 years ago | Mr.DK", null, 'live_class', 'youtube', 'https://www.youtube.com/watch?v=O9B9XqEnPV8', 'O9B9XqEnPV8',
+    "Recorded live teaching \u00b7 Mr.DK", null, 'en', null, 59);
+  insRes.run(null, null, "The Secret About Pallavas! \ud83e\udd81 - Tamil Podcast | Mannar Mannan | Vallal Media | Varun Talks", null, 'live_class', 'youtube', 'https://www.youtube.com/watch?v=_B3FC-XIkxM', '_B3FC-XIkxM',
+    "Recorded live teaching \u00b7 Varun Talks", null, 'en', null, 60);
+  insRes.run(null, null, "The Rise and Fall of the Pallava Dynasty | Builders of Mahabalipuram | Ancient India Documentary", null, 'live_class', 'youtube', 'https://www.youtube.com/watch?v=_4-aVaAibkk', '_4-aVaAibkk',
+    "Recorded live teaching \u00b7 Engr. Usama Manzoor", null, 'en', null, 61);
+  insRes.run(null, null, "Sangam Age in Tamil | Chera Chola Pandya History in Tamil | TNPSC History |  Karthick Elangovan |", null, 'live_class', 'youtube', 'https://www.youtube.com/watch?v=F0POARTdurU', 'F0POARTdurU',
+    "Recorded live teaching \u00b7 Quick Learning 4 TNPSC , IBPS, SSC", null, 'en', null, 62);
+  insRes.run(null, null, "Cheras Cholas Pandyas | Sangam Age - Political History | Ancient History for UPSC", null, 'live_class', 'youtube', 'https://www.youtube.com/watch?v=83Tnofm1LJM', '83Tnofm1LJM',
+    "Recorded live teaching \u00b7 Bookstawa", null, 'en', null, 63);
+  insRes.run(null, null, "2000-\u0bb5\u0bb0\u0bc1\u0b9f \u0baa\u0bbf\u0bb0\u0bae\u0bcd\u0bae\u0bbe\u0ba3\u0bcd \u0bb5\u0bb0\u0bb2\u0bbe\u0bb1\u0bc1!\ud83d\udd25FULL History in 1 Hour | Pandya History | Pandya King History in Tamil", null, 'live_class', 'youtube', 'https://www.youtube.com/watch?v=tlxLZP9TYtc', 'tlxLZP9TYtc',
+    "Recorded live teaching \u00b7 Ungal Anban Hemanth", null, 'ta', null, 64);
+  insRes.run(null, null, "The Pandya Dynasty \u2013 Ancient Tamil Kings Who Shaped South India\u2019s Glory \ud83c\udf3a Forgotten Empire Reborn ", null, 'live_class', 'youtube', 'https://www.youtube.com/watch?v=LHwH3i1OrZs', 'LHwH3i1OrZs',
+    "Recorded live teaching \u00b7 TIME CAPSULE TALES", null, 'en', null, 65);
+  insRes.run(null, null, "madurai tamizhi inscription | nedunchezhiyan pandya king | tamil", null, 'live_class', 'youtube', 'https://www.youtube.com/watch?v=9QOz9h9rrQY', '9QOz9h9rrQY',
+    "Recorded live teaching \u00b7 Across Cultures: A Valluvar Path", null, 'en', null, 66);
+  insRes.run(null, null, "3000 \u0bb5\u0bb0\u0bc1\u0b9a\u0bae\u0bcd \u0baa\u0bb4\u0bc8\u0baf \u0b95\u0bcb\u0bb5\u0bbf\u0bb2\u0bcd\ud83d\ude31#madurai #thiruparangundram #travelvlog", null, 'live_class', 'youtube', 'https://www.youtube.com/watch?v=qWI9yDSzuaM', 'qWI9yDSzuaM',
+    "Recorded live teaching \u00b7 Srii vlogz", null, 'ta', null, 67);
+  insRes.run(null, null, "Discovered in Madurai: Is This 800-Year-Old Temple the Final Trace of the Pandyas? | EDU TERIA IAS", null, 'live_class', 'youtube', 'https://www.youtube.com/watch?v=I2ktXXRbl0E', 'I2ktXXRbl0E',
+    "Recorded live teaching \u00b7 EDU TERIA IAS", null, 'en', null, 68);
+  insRes.run(null, null, "Chettinad Heritage & Cultural Festival - Fourth Edition (2025) | Short Documentary", null, 'live_class', 'youtube', 'https://www.youtube.com/watch?v=qez1rO2EmEY', 'qez1rO2EmEY',
+    "Recorded live teaching \u00b7 Coromandel Productions", null, 'en', null, 69);
+  insRes.run(null, null, "Discovering the Beauty and Richness of Tamil Nadu", null, 'live_class', 'youtube', 'https://www.youtube.com/watch?v=QrhpDFB3buc', 'QrhpDFB3buc',
+    "Recorded live teaching \u00b7 Tattva", null, 'en', null, 70);
+  insRes.run(null, null, "\u0ba4\u0bae\u0bbf\u0bb4\u0bb0\u0bcd \u0baa\u0bbe\u0bb0\u0bae\u0bcd\u0baa\u0bb0\u0bbf\u0baf  \u0b86\u0ba4\u0bbf \u0ba4\u0bae\u0bbf\u0bb4\u0bcd \u0b87\u0b9a\u0bc8\u0baf\u0bc1\u0b9f\u0ba9\u0bcd \u0baa\u0bb1\u0bc8 \u0bae\u0bb1\u0bcd\u0bb1\u0bc1\u0bae\u0bcd \u0b9a\u0bbf\u0bb2\u0bae\u0bcd\u0bae\u0bae\u0bcd Tamil Art of Beautiful Parai Isai Silambam", null, 'live_class', 'youtube', 'https://www.youtube.com/watch?v=pWlZo2FvhYA', 'pWlZo2FvhYA',
+    "Recorded live teaching \u00b7 RN MEDIA TAMIL \u0bb5\u0bbf\u0bb4\u0bbf\u0ba4\u0bcd\u0ba4\u0bbf\u0bb0\u0bc1 \u0ba4\u0bae\u0bbf\u0bb4\u0bbe", null, 'ta', null, 71);
+  insRes.run(null, null, "Silambam by American Tamil Women | Tamil Kural | Silambam Ladies | Silambam Fight | Martial arts |", null, 'live_class', 'youtube', 'https://www.youtube.com/watch?v=Wf_pAGQJD4M', 'Wf_pAGQJD4M',
+    "Recorded live teaching \u00b7 Tamilkural", null, 'en', null, 72);
+  insRes.run(null, null, "Can not hide Truth ! | Ancient Tamil Food | \u0b9a\u0b99\u0bcd\u0b95 \u0b95\u0bbe\u0bb2 \u0ba4\u0bae\u0bbf\u0bb4\u0bb0\u0bcd \u0b89\u0ba3\u0bb5\u0bc1 #tamil", null, 'live_class', 'youtube', 'https://www.youtube.com/watch?v=47utjr0DMAU', '47utjr0DMAU',
+    "Recorded live teaching \u00b7 Damaaram", null, 'ta', null, 73);
+  insRes.run(null, null, "Ancient Vegetables: What did Indians Eat Before Colonisation?", null, 'live_class', 'youtube', 'https://www.youtube.com/watch?v=KatdtodBpY8', 'KatdtodBpY8',
+    "Recorded live teaching \u00b7 krishashok", null, 'en', null, 74);
+  insRes.run(null, null, "The Shocking History of Indian Food Hierarchies | Dr Pal", null, 'live_class', 'youtube', 'https://www.youtube.com/watch?v=Y14hr3FEZXc', 'Y14hr3FEZXc',
+    "Recorded live teaching \u00b7 Dr Pal", null, 'en', null, 75);
+  insRes.run(null, null, "Prof. V. SELVAKUMAR : MUSIRI IN SANGAM LITERATURE AND PATTANAM EXCAVATION.", null, 'live_class', 'youtube', 'https://www.youtube.com/watch?v=Pvs0aZrt3Xg', 'Pvs0aZrt3Xg',
+    "Recorded live teaching \u00b7 Dr B.ARUNRAJ", null, 'en', null, 76);
+  insRes.run(null, null, "What was the BIGGEST Secret of Ancient Tamil Trade? | @Rangawisdom", null, 'live_class', 'youtube', 'https://www.youtube.com/watch?v=dFCFLyQD7GE', 'dFCFLyQD7GE',
+    "Recorded live teaching \u00b7 RANGA Wisdom", null, 'en', null, 77);
+  insRes.run(null, null, "\u201cKilvalai & Sethavarai: Tamil Nadu\u2019s 3000-Year-Old Rock Paintings\u201d", null, 'live_class', 'youtube', 'https://www.youtube.com/watch?v=KWhxiUjiKSo', 'KWhxiUjiKSo',
+    "Recorded live teaching \u00b7 PASSION FOR TRAVEL", null, 'en', null, 78);
+
   /* ────────────────────────── Culture: temples & heritage ────────────────────────── */
   const insCulture = db.prepare(
     `INSERT INTO culture_items (category, slug, title, title_tamil, subtitle, subtitle_tamil, meaning, meaning_tamil, description, description_tamil, region, era, facts_json, sort_order, is_published)

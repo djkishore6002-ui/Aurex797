@@ -8,7 +8,7 @@ describe('language registry', () => {
   });
 
   it('includes the world\'s 10 most-spoken languages', () => {
-    const codes = new Set(LANGS.map((l) => l.code));
+    const codes = new Set<string>(LANGS.map((l) => l.code));
     for (const c of ['en', 'zh', 'hi', 'es', 'fr', 'ar', 'bn', 'ru', 'pt', 'id']) expect(codes.has(c)).toBe(true);
   });
 
@@ -57,7 +57,7 @@ describe('t (chrome translations)', () => {
 
 describe('NATIVE_LANG_OPTIONS (register / profile)', () => {
   it('offers the world\'s 10 languages plus Indian regionals + Tamil', () => {
-    const codes = new Set(NATIVE_LANG_OPTIONS.map(([c]) => c));
+    const codes = new Set<string>(NATIVE_LANG_OPTIONS.map(([c]) => c));
     expect(codes.size).toBe(14);
     for (const c of ['en', 'zh', 'hi', 'es', 'fr', 'ar', 'bn', 'ru', 'pt', 'id', 'te', 'ml', 'kn', 'ta']) {
       expect(codes.has(c)).toBe(true);

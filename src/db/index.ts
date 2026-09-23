@@ -60,6 +60,41 @@ export function getDb(): DB {
       );
       _db.exec('PRAGMA foreign_keys = ON;');
     }
+    // Migration: extend learning_resources.type CHECK with 'live_class'
+    // (recorded live teaching). Fresh DBs already have it in schema.sql.
+    const lrSql = String(
+      (_db.prepare("SELECT sql FROM sqlite_master WHERE type='table' AND name='learning_resources'").get() as unknown as { sql: string } | undefined)?.sql ?? ''
+    );
+    if (lrSql && !lrSql.includes("'live_class'")) {
+      _db.exec('PRAGMA foreign_keys = OFF;');
+      _db.exec(
+        `CREATE TABLE learning_resources_migrate (
+           id INTEGER PRIMARY KEY AUTOINCREMENT,
+           course_id INTEGER REFERENCES courses(id) ON DELETE SET NULL,
+           lesson_id INTEGER REFERENCES lessons(id) ON DELETE CASCADE,
+           title TEXT NOT NULL,
+           title_tamil TEXT,
+           type TEXT NOT NULL CHECK (type IN ('video','note','book','guide','article','playlist','course','live_class')),
+           provider TEXT NOT NULL DEFAULT 'external' CHECK (provider IN ('npel','youtube','alison','pdf','website','other')),
+           url TEXT NOT NULL,
+           youtube_id TEXT,
+           description TEXT,
+           description_tamil TEXT,
+           language TEXT NOT NULL DEFAULT 'ta',
+           level TEXT,
+           sort_order INTEGER NOT NULL DEFAULT 0,
+           is_published INTEGER NOT NULL DEFAULT 1
+         );
+         INSERT INTO learning_resources_migrate (id, course_id, lesson_id, title, title_tamil, type, provider, url, youtube_id, description, description_tamil, language, level, sort_order, is_published)
+           SELECT id, course_id, lesson_id, title, title_tamil, type, provider, url, youtube_id, description, description_tamil, language, level, sort_order, is_published FROM learning_resources;
+         DROP TABLE learning_resources;
+         ALTER TABLE learning_resources_migrate RENAME TO learning_resources;
+         CREATE INDEX IF NOT EXISTS idx_resources_course ON learning_resources(course_id);
+         CREATE INDEX IF NOT EXISTS idx_resources_lesson ON learning_resources(lesson_id);
+         CREATE INDEX IF NOT EXISTS idx_resources_type ON learning_resources(type);`
+      );
+      _db.exec('PRAGMA foreign_keys = ON;');
+    }
     // Migration: add the world's 10 languages to ai supported_languages (idempotent)
     const slRow = _db.prepare('SELECT supported_languages FROM ai_provider_settings WHERE id = 1').get() as unknown as { supported_languages: string } | undefined;
     if (slRow) {

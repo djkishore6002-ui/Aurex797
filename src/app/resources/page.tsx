@@ -54,7 +54,7 @@ export default function ResourcesPage() {
         title={head.main}
         subtitle={
           head.sub +
-          ' — videos from NPTEL, YouTube and Alison, plus reference notes, books and guides. Everything free, organised in one library.'
+          ' — videos from NPTEL, YouTube and Alison, recorded live-teaching classes, plus reference notes, books and guides. Everything free, organised in one library.'
         }
         actions={
           <div className="flex items-center gap-2">

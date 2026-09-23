@@ -8,7 +8,7 @@ import { indexSource, removeSource } from '@/lib/ai/knowledge';
 const fields = z.object({
   title: z.string().trim().min(3).max(200),
   title_tamil: z.string().trim().max(200).nullable().optional(),
-  type: z.enum(['video', 'note', 'book', 'guide', 'article', 'playlist', 'course']),
+  type: z.enum(['video', 'note', 'book', 'guide', 'article', 'playlist', 'course', 'live_class']),
   provider: z.enum(['npel', 'youtube', 'alison', 'pdf', 'website', 'other']),
   url: z.string().trim().url(),
   youtube_id: z.string().trim().max(20).nullable().optional(),

@@ -23,7 +23,8 @@ interface Course {
   title: string;
 }
 
-const TYPES = ['video', 'playlist', 'course', 'note', 'book', 'guide', 'article'];
+const TYPES = ['video', 'live_class', 'playlist', 'course', 'note', 'book', 'guide', 'article'];
+const TYPE_LABELS: Record<string, string> = { video: 'Video', live_class: 'Live teaching', playlist: 'Playlist', course: 'Course', note: 'Note', book: 'Book', guide: 'Guide', article: 'Article' };
 const PROVIDERS = [
   ['youtube', 'YouTube'],
   ['npel', 'NPTEL'],
@@ -115,7 +116,7 @@ export function ResourcesAdmin({ resources, courses }: { resources: Row[]; cours
           <select value={form.type} onChange={(e) => setForm({ ...form, type: e.target.value })} className="input mt-1">
             {TYPES.map((t) => (
               <option key={t} value={t}>
-                {t}
+                {TYPE_LABELS[t] ?? t}
               </option>
             ))}
           </select>

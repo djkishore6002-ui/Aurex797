@@ -20,6 +20,7 @@ export interface ResourceRow {
 const TYPES = [
   { key: 'all', label: 'All', ta: 'அனைத்தும்' },
   { key: 'video', label: 'Videos', ta: 'வீடியோ' },
+  { key: 'live_class', label: '🎥 Live teaching', ta: 'நேரடி வகுப்பு' },
   { key: 'playlist', label: 'Playlists', ta: 'பட்டியல்' },
   { key: 'course', label: 'Courses', ta: 'வகுப்புகள்' },
   { key: 'note', label: 'Notes', ta: 'குறிப்புகள்' },
@@ -43,7 +44,7 @@ const LEVELS = [
   { key: 'advanced', label: '🌳 Advanced' },
 ] as const;
 
-const TYPE_ICON: Record<string, string> = { video: '🎬', playlist: '📼', course: '🎓', note: '📝', book: '📕', guide: '🧭', article: '📰' };
+const TYPE_ICON: Record<string, string> = { video: '🎬', live_class: '🎥', playlist: '📼', course: '🎓', note: '📝', book: '📕', guide: '🧭', article: '📰' };
 const PROVIDER_STYLE: Record<string, string> = {
   youtube: 'border-red-400/30 bg-red-400/10 text-red-200',
   npel: 'border-brand-400/30 bg-brand-500/15 text-brand-200',
