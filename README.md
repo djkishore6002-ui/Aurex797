@@ -78,6 +78,8 @@ npm run db:reset     # wipe data/solai.db (self-reseeds on next boot)
   footer, banners — edits reflect live), audit log
 
 **Platform**
+- "Midnight aurora" dark theme: violet→cyan gradient accents, glassmorphism
+  surfaces, aurora-glow hero, Plus Jakarta Sans + Noto Sans Tamil typography
 - PWA: web manifest + service worker (shell caching, never caches `/api`)
 - Security: scrypt password hashing, signed httpOnly session cookies, strict
   server-side RBAC on every route, per-route API rate limiting, AES-256-GCM

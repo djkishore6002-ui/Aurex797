@@ -29,7 +29,7 @@ export default function LoginPage() {
           <p className="mt-1 text-sm text-ink-500">Log in to continue your Tamil journey</p>
         </div>
         {demos.length > 0 && (
-          <div className="mb-5 rounded-xl border border-marigold-200 bg-marigold-50 px-4 py-3 text-xs leading-relaxed text-marigold-900">
+          <div className="mb-5 rounded-xl border border-marigold-400/30 bg-marigold-400/10 px-4 py-3 text-xs leading-relaxed text-marigold-200">
             <p className="font-bold">DEVELOPMENT BUILD — demo accounts (passwords: admin1234 / organizer1234 / teacher1234 / learner1234)</p>
             <p className="mt-1">
               {demos.map((d) => (

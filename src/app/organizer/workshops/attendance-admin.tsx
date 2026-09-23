@@ -92,7 +92,7 @@ export function AttendanceAdmin({ workshops }: { workshops: Workshop[] }) {
                   <button
                     key={s.id}
                     onClick={() => setSessionId(sessionId === s.id ? null : s.id)}
-                    className={`rounded-xl border px-3.5 py-2 text-left text-sm ${sessionId === s.id ? 'border-brand-500 bg-white font-semibold' : 'border-ink-200 bg-white/60'}`}
+                    className={`rounded-xl border px-3.5 py-2 text-left text-sm ${sessionId === s.id ? 'border-brand-500 bg-brand-500/15 font-semibold' : 'border-ink-200 bg-white/5'}`}
                   >
                     {s.title}
                     <span className="block text-[11px] font-normal text-ink-400">

@@ -3,8 +3,8 @@
 @tailwind utilities;
 
 :root {
-  --font-sans: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Noto Sans', sans-serif;
-  --font-tamil: 'Noto Sans Tamil', 'Nirmala UI', 'Latha', var(--font-sans);
+  --font-sans: 'Plus Jakarta Sans', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+  --font-tamil: 'Noto Sans Tamil', 'Plus Jakarta Sans', 'Nirmala UI', var(--font-sans);
 }
 
 html {
@@ -24,12 +24,20 @@ html {
   }
 }
 
+/* ── Midnight aurora base ─────────────────────────────────────── */
 body {
-  @apply bg-ink-50 text-ink-950 antialiased;
+  @apply text-ink-950 antialiased;
+  background-color: #060913;
+  background-image:
+    radial-gradient(1100px 540px at 12% -8%, rgba(124, 58, 237, 0.16), transparent 60%),
+    radial-gradient(900px 480px at 92% -4%, rgba(34, 211, 238, 0.07), transparent 55%),
+    radial-gradient(1300px 760px at 50% 118%, rgba(109, 40, 217, 0.12), transparent 62%);
+  background-attachment: fixed;
 }
 
-.tamil {
-  font-family: var(--font-tamil);
+::selection {
+  background: rgba(139, 92, 246, 0.4);
+  color: #fff;
 }
 
 @layer components {
@@ -37,54 +45,188 @@ body {
     @apply mx-auto w-full max-w-6xl px-4 sm:px-6 lg:px-8;
   }
 
+  /* Glass card — the core surface */
   .card {
-    @apply rounded-2xl border border-ink-200 bg-white shadow-sm;
+    @apply rounded-2xl border border-white/10 bg-[#0d1326]/70 shadow-[0_12px_40px_-16px_rgba(2,6,23,0.7)] backdrop-blur-xl;
+  }
+  .glass {
+    @apply rounded-2xl border border-white/10 bg-white/5 backdrop-blur-xl;
   }
 
   .btn {
-    @apply inline-flex items-center justify-center gap-2 rounded-xl px-4 py-2.5 text-sm font-semibold transition-colors focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-brand-600 disabled:cursor-not-allowed disabled:opacity-50;
+    @apply inline-flex items-center justify-center gap-2 rounded-xl px-4 py-2.5 text-sm font-semibold transition-all focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-brand-400 disabled:cursor-not-allowed disabled:opacity-50;
   }
   .btn-primary {
-    @apply btn bg-brand-700 text-white hover:bg-brand-800;
+    @apply btn bg-gradient-to-r from-brand-600 via-brand-500 to-brand-400 text-white shadow-[0_10px_30px_-8px_rgba(139,92,246,0.55)] hover:shadow-[0_14px_38px_-8px_rgba(139,92,246,0.75)] hover:brightness-110 active:scale-[0.99];
   }
   .btn-secondary {
-    @apply btn border border-ink-300 bg-white text-ink-800 hover:bg-ink-100;
+    @apply btn border border-white/15 bg-white/5 text-ink-800 backdrop-blur hover:border-white/30 hover:bg-white/10;
   }
   .btn-danger {
-    @apply btn bg-red-600 text-white hover:bg-red-700;
+    @apply btn bg-red-500 text-white hover:bg-red-400;
   }
   .btn-ghost {
-    @apply btn text-ink-700 hover:bg-ink-100;
+    @apply btn text-ink-400 hover:bg-white/5 hover:text-ink-950;
   }
 
   .input {
-    @apply w-full rounded-xl border border-ink-300 bg-white px-3.5 py-2.5 text-sm text-ink-950 placeholder:text-ink-400 focus:border-brand-500 focus:outline-none focus:ring-2 focus:ring-brand-500/30;
+    @apply w-full rounded-xl border border-white/10 bg-[#080b18]/80 px-3.5 py-2.5 text-sm text-ink-950 placeholder:text-ink-400/60 focus:border-brand-500/70 focus:outline-none focus:ring-2 focus:ring-brand-500/25;
   }
   .label {
-    @apply mb-1.5 block text-sm font-medium text-ink-700;
+    @apply mb-1.5 block text-sm font-medium text-ink-300;
   }
 
   .badge {
     @apply inline-flex items-center gap-1 rounded-full px-2.5 py-0.5 text-xs font-semibold;
   }
 
-  .prose-block {
-    @apply space-y-4;
+  /* Gradient display text */
+  .text-gradient {
+    background: linear-gradient(96deg, #f3f0ff 0%, #c4b5fd 42%, #a78bfa 62%, #67e8f9 100%);
+    -webkit-background-clip: text;
+    background-clip: text;
+    color: transparent;
+  }
+  .text-gradient-soft {
+    background: linear-gradient(100deg, #ffffff 20%, #ddd6fe 70%, #a5f3fc 110%);
+    -webkit-background-clip: text;
+    background-clip: text;
+    color: transparent;
+  }
+
+  /* Faint aurora grid for hero sections */
+  .hero-grid {
+    background-image:
+      linear-gradient(rgba(148, 163, 255, 0.055) 1px, transparent 1px),
+      linear-gradient(90deg, rgba(148, 163, 255, 0.055) 1px, transparent 1px);
+    background-size: 44px 44px;
+    -webkit-mask-image: radial-gradient(ellipse 85% 65% at 50% 0%, black 25%, transparent 78%);
+    mask-image: radial-gradient(ellipse 85% 65% at 50% 0%, black 25%, transparent 78%);
+  }
+
+  /* Blurred glow orbs */
+  .orb {
+    @apply pointer-events-none absolute rounded-full;
+    filter: blur(90px);
+    will-change: transform;
   }
 }
 
-/* AI chat markdown-ish rendering (safe: rendered from escaped HTML) */
+/* ── Dark-theme utility remaps ───────────────────────────────────
+   The codebase was written against light-theme utilities. These
+   overrides flip each utility to its dark counterpart in one place. */
+.bg-white {
+  background-color: rgba(13, 18, 36, 0.66) !important;
+}
+.bg-white\/90,
+.bg-white\/95 {
+  background-color: rgba(7, 10, 22, 0.85) !important;
+}
+.bg-ink-950 {
+  background-color: rgba(3, 5, 12, 0.78) !important;
+}
+.bg-ink-950\/30 {
+  background-color: rgba(3, 5, 12, 0.42) !important;
+}
+.bg-ink-950\/40 {
+  background-color: rgba(3, 5, 12, 0.52) !important;
+}
+.bg-ink-950\/50 {
+  background-color: rgba(3, 5, 12, 0.64) !important;
+}
+
+.border-ink-50 {
+  border-color: rgba(148, 163, 255, 0.09) !important;
+}
+.border-ink-100 {
+  border-color: rgba(148, 163, 255, 0.1) !important;
+}
+.border-ink-200 {
+  border-color: rgba(148, 163, 255, 0.14) !important;
+}
+.border-ink-300 {
+  border-color: rgba(148, 163, 255, 0.22) !important;
+}
+.divide-ink-50 > * + * {
+  border-color: rgba(148, 163, 255, 0.09) !important;
+}
+.divide-ink-100 > * + * {
+  border-color: rgba(148, 163, 255, 0.12) !important;
+}
+
+.text-ink-300 {
+  color: #9aa4c0 !important;
+}
+.text-brand-700 {
+  color: #a78bfa !important;
+}
+.bg-brand-50 {
+  background-color: rgba(139, 92, 246, 0.14) !important;
+}
+.bg-brand-100 {
+  background-color: rgba(139, 92, 246, 0.16) !important;
+}
+.border-brand-200 {
+  border-color: rgba(167, 139, 250, 0.25) !important;
+}
+
+.bg-red-50 {
+  background-color: rgba(248, 113, 113, 0.09) !important;
+}
+.text-red-600 {
+  color: #f87171 !important;
+}
+.text-red-700 {
+  color: #fca5a5 !important;
+}
+.border-red-200 {
+  border-color: rgba(248, 113, 113, 0.28) !important;
+}
+.border-red-300 {
+  border-color: rgba(248, 113, 113, 0.4) !important;
+}
+.bg-sky-100 {
+  background-color: rgba(56, 189, 248, 0.13) !important;
+}
+.text-sky-800,
+.text-sky-900 {
+  color: #7dd3fc !important;
+}
+.bg-red-100 {
+  background-color: rgba(248, 113, 113, 0.14) !important;
+}
+.bg-marigold-50 {
+  background-color: rgba(251, 191, 36, 0.07) !important;
+}
+.bg-marigold-100 {
+  background-color: rgba(251, 191, 36, 0.12) !important;
+}
+.border-marigold-200 {
+  border-color: rgba(251, 191, 36, 0.25) !important;
+}
+.border-marigold-300 {
+  border-color: rgba(251, 191, 36, 0.35) !important;
+}
+.text-marigold-700,
+.text-marigold-800 {
+  color: #fbbf24 !important;
+}
+.text-marigold-900 {
+  color: #fcd34d !important;
+}
+
+/* ── AI chat markdown-ish rendering ───────────────────────────── */
 .ai-md p {
   margin: 0.35rem 0;
 }
 .ai-md strong {
-  @apply font-semibold;
+  @apply font-semibold text-ink-950;
 }
 .ai-md em {
   @apply italic;
 }
 .ai-md code {
-  @apply rounded bg-ink-100 px-1.5 py-0.5 text-[0.85em] font-mono;
+  @apply rounded border border-white/10 bg-white/10 px-1.5 py-0.5 font-mono text-[0.85em] text-brand-200;
 }
 .ai-md ul,
 .ai-md ol {
@@ -94,7 +236,7 @@ body {
   @apply list-decimal;
 }
 .ai-md a {
-  @apply text-brand-700 underline;
+  @apply text-brand-300 underline;
 }
 .ai-md .tamil {
   font-size: 1.05em;
@@ -102,16 +244,21 @@ body {
 
 /* Video player */
 .video-shell video::-webkit-media-controls-panel {
-  background-color: rgba(15, 23, 32, 0.85);
+  background-color: rgba(6, 9, 19, 0.85);
 }
 
-/* Scrollbar (subtle) */
+/* Scrollbar */
 ::-webkit-scrollbar {
   width: 10px;
   height: 10px;
 }
 ::-webkit-scrollbar-thumb {
-  @apply rounded-full bg-ink-300;
+  border-radius: 9999px;
+  background: rgba(139, 92, 246, 0.35);
+  border: 2px solid rgba(6, 9, 19, 0.6);
+}
+::-webkit-scrollbar-thumb:hover {
+  background: rgba(139, 92, 246, 0.55);
 }
 ::-webkit-scrollbar-track {
   background: transparent;

@@ -4,8 +4,8 @@
   "description": "Learn Tamil through structured courses, live workshops, an AI tutor and a warm community.",
   "start_url": "/",
   "display": "standalone",
-  "background_color": "#f6f7f8",
-  "theme_color": "#2a513b",
+  "background_color": "#060913",
+  "theme_color": "#7c3aed",
   "orientation": "portrait-primary",
   "icons": [
     { "src": "/icon.svg", "sizes": "any", "type": "image/svg+xml", "purpose": "any" }

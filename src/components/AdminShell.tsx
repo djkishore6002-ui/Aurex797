@@ -27,7 +27,7 @@ export function AdminShell({ user, children }: { user: { name: string }; pathnam
 
   return (
     <div className="container-page py-8">
-      <div className="mb-8 rounded-2xl border border-brand-200 bg-brand-50/60 px-5 py-3 text-sm text-brand-900">
+      <div className="mb-8 rounded-2xl border border-brand-400/25 bg-gradient-to-r from-brand-500/15 via-brand-500/5 to-transparent px-5 py-3 text-sm text-brand-200">
         <b>Super Admin console</b> — every change here is database-driven and takes effect immediately on the website, the AI knowledge base and the audit log. Signed in as <b>{user.name}</b>.
       </div>
       <div className="grid gap-8 lg:grid-cols-[230px_1fr]">
@@ -42,7 +42,7 @@ export function AdminShell({ user, children }: { user: { name: string }; pathnam
                     <li key={it.href}>
                       <Link
                         href={it.href}
-                        className={`flex items-center gap-2.5 rounded-xl px-3 py-2 text-sm font-medium ${active ? 'bg-brand-700 text-white' : 'text-ink-700 hover:bg-white'}`}
+                        className={`flex items-center gap-2.5 rounded-xl px-3 py-2 text-sm font-medium transition-colors ${active ? 'bg-gradient-to-r from-brand-600 to-brand-500 text-white shadow-glow-sm' : 'text-ink-300 hover:bg-white/5 hover:text-ink-950'}`}
                       >
                         <span aria-hidden>{it.icon}</span>
                         {it.label}

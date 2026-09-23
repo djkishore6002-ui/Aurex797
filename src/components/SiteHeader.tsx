@@ -11,21 +11,21 @@ export function SiteHeader({ settings }: { settings: SiteSettings }) {
   const nav = getNav(db, 'header');
   const user = getCurrentUser();
   return (
-    <header className="sticky top-0 z-40 border-b border-ink-200 bg-white/90 backdrop-blur supports-[backdrop-filter]:bg-white/75">
+    <header className="sticky top-0 z-40 border-b border-white/10 bg-[#060913]/80 backdrop-blur-xl">
       <div className="container-page flex h-16 items-center gap-3">
         <Link href={user ? '/dashboard' : '/'} className="flex items-center gap-2.5" aria-label={`${settings.site_name} home`}>
-          <span aria-hidden className="grid h-9 w-9 place-items-center rounded-xl bg-brand-700 text-lg font-bold text-white">
+          <span aria-hidden className="grid h-9 w-9 place-items-center rounded-xl bg-gradient-to-br from-brand-500 via-brand-600 to-cyan-500 text-lg font-bold text-white shadow-glow-sm">
             ச
           </span>
           <span className="hidden flex-col leading-tight sm:flex">
-            <span className="text-base font-bold tracking-tight text-ink-950">{settings.site_name}</span>
-            <span className="text-[11px] text-ink-500">Tamil Learning Garden</span>
+            <span className="text-base font-extrabold tracking-tight text-ink-950">{settings.site_name}</span>
+            <span className="text-[11px] font-medium text-brand-300/80">Tamil Learning Garden</span>
           </span>
         </Link>
 
         <nav aria-label="Main" className="ml-4 hidden items-center gap-1 lg:flex">
           {nav.map((n) => (
-            <Link key={n.id} href={n.href} className="rounded-lg px-3 py-2 text-sm font-medium text-ink-600 transition-colors hover:bg-ink-100 hover:text-ink-950">
+            <Link key={n.id} href={n.href} className="rounded-lg px-3 py-2 text-sm font-medium text-ink-400 transition-colors hover:bg-white/5 hover:text-ink-950">
               {n.label}
             </Link>
           ))}
@@ -36,7 +36,7 @@ export function SiteHeader({ settings }: { settings: SiteSettings }) {
           {user && <NotificationBell />}
           {user ? (
             <div className="hidden items-center gap-2 sm:flex">
-              <span className="hidden text-sm font-medium text-ink-700 xl:inline">Vanakkam, {user.name.split(' ')[0]} 👋</span>
+              <span className="hidden text-sm font-medium text-ink-300 xl:inline">Vanakkam, {user.name.split(' ')[0]} 👋</span>
               <UserMenu user={{ id: user.id, name: user.name, role: user.role }} />
             </div>
           ) : (
@@ -53,18 +53,18 @@ export function SiteHeader({ settings }: { settings: SiteSettings }) {
         </div>
       </div>
       {/* Secondary mobile nav row */}
-      <nav aria-label="Secondary" className="flex items-center gap-1 overflow-x-auto border-t border-ink-100 px-3 py-1.5 lg:hidden">
+      <nav aria-label="Secondary" className="flex items-center gap-1 overflow-x-auto border-t border-white/5 px-3 py-1.5 lg:hidden">
         {nav.map((n) => (
-          <Link key={n.id} href={n.href} className="whitespace-nowrap rounded-lg px-3 py-1.5 text-sm font-medium text-ink-600 hover:bg-ink-100">
+          <Link key={n.id} href={n.href} className="whitespace-nowrap rounded-lg px-3 py-1.5 text-sm font-medium text-ink-400 hover:bg-white/5 hover:text-ink-950">
             {n.label}
           </Link>
         ))}
         {!user && (
           <>
-            <Link href="/login" className="whitespace-nowrap rounded-lg px-3 py-1.5 text-sm font-semibold text-brand-700">
+            <Link href="/login" className="whitespace-nowrap rounded-lg px-3 py-1.5 text-sm font-semibold text-brand-300">
               Log in
             </Link>
-            <Link href="/register" className="whitespace-nowrap rounded-lg bg-brand-700 px-3 py-1.5 text-sm font-semibold text-white">
+            <Link href="/register" className="whitespace-nowrap rounded-lg bg-gradient-to-r from-brand-600 to-brand-500 px-3 py-1.5 text-sm font-semibold text-white">
               Start free
             </Link>
           </>

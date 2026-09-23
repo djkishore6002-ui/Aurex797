@@ -32,18 +32,18 @@ export function ProgressBar({ value, className = '', label }: { value: number; c
       aria-label={label ?? `Progress ${v}%`}
       className={`h-2.5 w-full overflow-hidden rounded-full bg-ink-200 ${className}`}
     >
-      <div className="h-full rounded-full bg-brand-600 transition-[width] duration-500" style={{ width: `${v}%` }} />
+      <div className="h-full rounded-full bg-gradient-to-r from-brand-500 via-brand-400 to-cyan-400 shadow-glow-sm transition-[width] duration-500" style={{ width: `${v}%` }} />
     </div>
   );
 }
 
 export function Badge({ tone = 'default', children }: { tone?: 'default' | 'success' | 'warning' | 'danger' | 'info'; children: React.ReactNode }) {
   const tones: Record<string, string> = {
-    default: 'bg-ink-100 text-ink-700',
-    success: 'bg-brand-100 text-brand-800',
-    warning: 'bg-marigold-100 text-marigold-800',
-    danger: 'bg-red-100 text-red-700',
-    info: 'bg-sky-100 text-sky-800',
+    default: 'border border-white/10 bg-white/5 text-ink-300',
+    success: 'border border-brand-400/30 bg-brand-500/15 text-brand-200',
+    warning: 'border border-marigold-400/30 bg-marigold-400/15 text-marigold-200',
+    danger: 'border border-red-400/30 bg-red-400/15 text-red-200',
+    info: 'border border-sky-400/30 bg-sky-400/15 text-sky-200',
   };
   return <span className={`badge ${tones[tone]}`}>{children}</span>;
 }
@@ -52,8 +52,9 @@ export function PageHead({ title, subtitle, actions }: { title: string; subtitle
   return (
     <div className="mb-8 flex flex-wrap items-end justify-between gap-4">
       <div>
+        <div aria-hidden className="mb-3 h-1 w-12 rounded-full bg-gradient-to-r from-brand-500 to-cyan-400" />
         <h1 className="text-2xl font-bold tracking-tight text-ink-950 sm:text-3xl">{title}</h1>
-        {subtitle && <p className="mt-1.5 max-w-2xl text-sm text-ink-500 sm:text-base">{subtitle}</p>}
+        {subtitle && <p className="mt-1.5 max-w-2xl text-sm text-ink-400 sm:text-base">{subtitle}</p>}
       </div>
       {actions && <div className="flex flex-wrap items-center gap-2">{actions}</div>}
     </div>
@@ -79,7 +80,7 @@ export function StatCard({ label, value, icon, hint }: { label: string; value: R
 
 export function ErrorBanner({ error }: { error: string }) {
   return (
-    <div role="alert" className="rounded-xl border border-red-200 bg-red-50 px-4 py-3 text-sm font-medium text-red-700">
+    <div role="alert" className="rounded-xl border border-red-400/30 bg-red-400/10 px-4 py-3 text-sm font-medium text-red-300">
       {error}
     </div>
   );

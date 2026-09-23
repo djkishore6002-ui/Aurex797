@@ -113,7 +113,7 @@ export default function DashboardPage() {
 
       {/* Claimable certificates */}
       {claimable.length > 0 && (
-        <div className="mb-8 rounded-2xl border border-marigold-300 bg-gradient-to-r from-marigold-50 to-white p-5">
+        <div className="mb-8 rounded-2xl border border-marigold-300 bg-gradient-to-r from-marigold-400/10 via-transparent to-brand-500/10 p-5">
           <div className="flex flex-wrap items-center justify-between gap-3">
             <div>
               <h2 className="font-bold text-ink-950">🎓 You have earned a certificate!</h2>

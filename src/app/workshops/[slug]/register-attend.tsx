@@ -200,7 +200,7 @@ export function RegisterAttend({
 
       {/* Certificate */}
       {certificateEnabled && registered && (
-        <div className="card border-brand-200 bg-gradient-to-br from-brand-50 to-white p-6">
+        <div className="card border-brand-400/40 bg-gradient-to-br from-brand-500/15 via-transparent to-cyan-400/10 p-6">
           <h2 className="font-bold text-ink-950">🎓 Certificate</h2>
           <p className="mt-1 text-sm text-ink-600">
             {attendanceSummary?.eligible ? (

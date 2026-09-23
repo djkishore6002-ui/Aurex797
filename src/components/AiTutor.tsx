@@ -134,7 +134,7 @@ export function AiTutor({ context }: { context?: TutorContext }) {
       <button
         onClick={() => setOpen(true)}
         aria-label={`Open AI Tamil Tutor — ${contextLabel}`}
-        className="fixed bottom-20 right-4 z-50 flex items-center gap-2 rounded-full bg-brand-700 py-3 pl-4 pr-5 text-sm font-semibold text-white shadow-xl shadow-brand-900/30 transition-transform hover:scale-105 hover:bg-brand-800 sm:bottom-6"
+        className="fixed bottom-20 right-4 z-50 flex items-center gap-2 rounded-full bg-gradient-to-r from-brand-600 via-brand-500 to-cyan-500 py-3 pl-4 pr-5 text-sm font-semibold text-white shadow-[0_14px_44px_-8px_rgba(139,92,246,0.7)] transition-transform hover:scale-105 sm:bottom-6"
       >
         <Sparkles className="h-5 w-5" aria-hidden />
         <span className="hidden sm:inline">Tamil Tutor</span>
@@ -147,7 +147,7 @@ export function AiTutor({ context }: { context?: TutorContext }) {
 
   return (
     <div className="fixed right-3 bottom-16 z-50 w-[calc(100vw-1.5rem)] max-w-sm sm:right-4 sm:bottom-4" role="dialog" aria-label="AI Tamil Tutor">
-      <div className="flex flex-col overflow-hidden rounded-2xl border border-ink-200 bg-white shadow-2xl" style={{ height: minimized ? '52px' : 'min(640px, calc(100dvh - 7rem))' }}>
+      <div className="flex flex-col overflow-hidden rounded-2xl border border-white/10 bg-[#0a0f1f]/95 shadow-2xl shadow-black/50 backdrop-blur-2xl" style={{ height: minimized ? '52px' : 'min(640px, calc(100dvh - 7rem))' }}>
         {/* Header */}
         <div className="flex items-center gap-2.5 border-b border-ink-100 bg-brand-800 px-4 py-3 text-white">
           <span aria-hidden className="grid h-8 w-8 shrink-0 place-items-center rounded-full bg-white/15">
@@ -220,7 +220,7 @@ export function AiTutor({ context }: { context?: TutorContext }) {
                       ? ['Explain the grammar in this lesson', 'What does this sentence mean?', 'Quiz me on this lesson']
                       : ['What is the 90% certificate rule?', 'எனக்கு ஒரு தேநீர் வேண்டும் — explain this', 'How do I start learning Tamil?']
                     ).map((s) => (
-                      <button key={s} onClick={() => send(s)} className="rounded-full border border-brand-300 bg-white px-3 py-1.5 text-xs font-medium text-brand-800 hover:bg-brand-50">
+                      <button key={s} onClick={() => send(s)} className="rounded-full border border-brand-400/40 bg-brand-500/10 px-3 py-1.5 text-xs font-medium text-brand-200 transition-colors hover:bg-brand-500/25">
                         {s}
                       </button>
                     ))}
@@ -232,7 +232,7 @@ export function AiTutor({ context }: { context?: TutorContext }) {
                   <div
                     className={`max-w-[85%] ${
                       m.role === 'user'
-                        ? 'rounded-2xl rounded-tr-sm bg-brand-700 p-3 text-sm text-white'
+                        ? 'rounded-2xl rounded-tr-sm bg-gradient-to-br from-brand-600 to-brand-500 p-3 text-sm text-white shadow-glow-sm'
                         : 'rounded-2xl rounded-tl-sm bg-white p-3.5 shadow-sm'
                     }`}
                   >
